@@ -1,0 +1,26 @@
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: white;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='gray' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 7px;
+}
+
+.circle {
+  position: relative;
+  z-index: 2;
+}
+.circle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  z-index: -1;
+  border-radius: 50%;
+  background-color: #22c55e;
+}

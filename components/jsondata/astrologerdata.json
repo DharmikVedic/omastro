@@ -1,0 +1,172 @@
+{
+  "astrologer": [
+    {
+      "name": "gopal",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "gender": "male",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "raj",
+      "lang": ["hindi"],
+      "imgs": "/imgs/avatar-2.jpeg",
+      "exp": "10",
+      "gender": "male",
+      "price": "16",
+      "key": ["vedic", "numerology"]
+    },
+    {
+      "name": "ankit",
+      "imgs": "/imgs/profile2.jpg",
+      "lang": ["hindi", "english"],
+      "exp": "10",
+      "price": "5",
+      "gender": "male",
+      "key": ["tarot"]
+    },
+    {
+      "name": "jay",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["bengali", "gujarati"],
+      "exp": "12",
+      "price": "30",
+      "key": ["kp", "lal kitab"]
+    },
+    {
+      "name": "shadow",
+      "imgs": "/imgs/profile1.jpg",
+      "lang": ["hindi", "english", "bengali"],
+      "exp": "1",
+      "price": "100",
+      "key": ["vedic", "numerology"]
+    },
+    {
+      "name": "gopal2",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal3",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "price": "36",
+      "gender": "female",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal4",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "gender": "male",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal5",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "price": "36",
+      "gender": "male",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal6",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "gender": "female",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal7",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "gender": "female",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal8",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "price": "36",
+      "gender": "male",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal9",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "gender": "male",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "gopal10",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "price": "36",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "gender": "male",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "kevin",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "lang": ["marathi", "english"],
+      "exp": "45",
+      "gender": "male",
+      "price": "40",
+      "key": ["vastu", "horary"]
+    },
+    {
+      "name": "mangal",
+      "lang": ["hindi", "english"],
+      "exp": "2",
+      "gender": "male",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "price": "3",
+      "key": ["nadi"]
+    },
+    {
+      "name": "gopal11",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "gender": "female",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "bunny",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "price": "36",
+      "gender": "female",
+      "key": ["vastu", "numerology"]
+    },
+    {
+      "name": "ropal",
+      "lang": ["hindi", "english"],
+      "exp": "15",
+      "imgs": "/imgs/avatar-2.jpeg",
+      "gender": "male",
+      "price": "36",
+      "key": ["vastu", "numerology"]
+    }
+  ]
+}
