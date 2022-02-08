@@ -31,7 +31,6 @@ export default function Home() {
     },
   ];
   const [state, setstate] = useState(false);
-  console.log(state);
   return (
     <div>
       <Section

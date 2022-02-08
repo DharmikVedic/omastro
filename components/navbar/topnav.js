@@ -29,7 +29,7 @@ function Topnav() {
       setmouted(false);
       window.removeEventListener("scroll", handleNavigation);
     };
-  }, []);
+  }, [mouted]);
 
   const handleclose = (e) => {
     setdisplamenu((prev) => !prev);
@@ -47,7 +47,7 @@ function Topnav() {
       <div
         className={`${
           y
-            ? "bg-white shadow-sm"
+            ? "bg-white shadow-sm border-b border-zinc-200"
             : `${
                 url === ""
                   ? " border-b border-zinc-200 md:border-transparent"

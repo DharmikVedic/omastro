@@ -75,7 +75,7 @@ export default function Filter(props) {
   const [activelanguage, setactivelanguage] = useState(props.activelanguage);
 
   //   const [activecategory, setactivecategory] = useState(category);
-  const [activegender, setactivegender] = useState(gender);
+  const [activegender, setactivegender] = useState(props.activegender);
   const [activeskill, setactiveskill] = useState(props.activeskill);
 
   const handleFilter = (e) => {
@@ -109,6 +109,8 @@ export default function Filter(props) {
       document.removeEventListener("click", handleClickOutside, true);
     };
   });
+
+  console.log(activeskill);
 
   return (
     <>
@@ -181,28 +183,30 @@ export default function Filter(props) {
 
             {/*right*/}
             <div className="w-full py-3 px-5 flex flex-col">
-              <div className="overflow-y-scroll h-[300px] pb-10">
+              <div className="overflow-y-scroll flex flex-col h-[300px] pb-10">
+                <button
+                  onClick={() => {
+                    setactiveskill(props.filter.skill);
+                    setactivelanguage(props.filter.language);
+                    setactivegender(props.filter.gender);
+                  }}
+                  className="text-sky-400 mb-2 mr-5 text-sm hover:text-sky-500 hover:underline self-end  max-w-max w-full"
+                >
+                  Clear
+                </button>
                 {active === "skill" && (
-                  <div className="flex flex-col">
-                    <button
-                      onClick={() => setactiveskill(props.activeskill)}
-                      className="text-sky-400 mb-2 text-sm hover:text-sky-500 hover:underline self-end  max-w-max w-full"
-                    >
-                      Clear
-                    </button>
-                    <div className="flex mt-2 flex-col gap-2 w-full px-5">
-                      {props.activeskill.map((item, i) => (
-                        <SelectButton
-                          state={activeskill}
-                          active={activeskill.find(
-                            (i) => i === item.toLowerCase()
-                          )}
-                          handle={setactiveskill}
-                          key={i}
-                          name={item}
-                        />
-                      ))}
-                    </div>
+                  <div className="flex mt-2 flex-col gap-2 w-full px-5">
+                    {props.filter.skill.map((item, i) => (
+                      <SelectButton
+                        state={activeskill}
+                        active={activeskill.find(
+                          (i) => i === item.toLowerCase()
+                        )}
+                        handle={setactiveskill}
+                        key={i}
+                        name={item}
+                      />
+                    ))}
                   </div>
                 )}
                 {/* {active === "category" && (
@@ -219,45 +223,29 @@ export default function Filter(props) {
                   </div>
                 )} */}
                 {active === "language" && (
-                  <div className="flex flex-col">
-                    <button
-                      onClick={() => setactivelanguage(props.activelanguage)}
-                      className="text-sky-400 mb-2 text-sm hover:text-sky-500 hover:underline self-end  max-w-max w-full"
-                    >
-                      Clear
-                    </button>
-                    <div className="flex mt-2 flex-col gap-2 w-full px-5">
-                      {props.activelanguage.map((item, i) => (
-                        <SelectButton
-                          state={activelanguage}
-                          active={activelanguage.find((i) => i === item)}
-                          handle={setactivelanguage}
-                          key={i}
-                          name={item}
-                        />
-                      ))}
-                    </div>
+                  <div className="flex mt-2 flex-col gap-2 w-full px-5">
+                    {props.filter.language.map((item, i) => (
+                      <SelectButton
+                        state={activelanguage}
+                        active={activelanguage.find((i) => i === item)}
+                        handle={setactivelanguage}
+                        key={i}
+                        name={item}
+                      />
+                    ))}
                   </div>
                 )}
                 {active === "gender" && (
-                  <div className="flex flex-col">
-                    <button
-                      onClick={() => setactivegender(["male", "female"])}
-                      className="text-sky-400 mb-2 text-sm hover:text-sky-500 hover:underline self-end  max-w-max w-full"
-                    >
-                      Clear
-                    </button>
-                    <div className="flex mt-2 flex-col gap-2 w-full px-5">
-                      {gender.map((item, i) => (
-                        <SelectButton
-                          state={activegender}
-                          active={activegender.find((i) => i === item)}
-                          handle={setactivegender}
-                          key={i}
-                          name={item}
-                        />
-                      ))}
-                    </div>
+                  <div className="flex mt-2 flex-col gap-2 w-full px-5">
+                    {props.filter.gender.map((item, i) => (
+                      <SelectButton
+                        state={activegender}
+                        active={activegender.find((i) => i === item)}
+                        handle={setactivegender}
+                        key={i}
+                        name={item}
+                      />
+                    ))}
                   </div>
                 )}
               </div>
@@ -288,6 +276,9 @@ const SelectButton = (props) => {
       props.handle((prev) => [...prev, e.target.value]);
     }
   };
+
+  console.log(props.active, props.name);
+
   return (
     <div
       className={`${

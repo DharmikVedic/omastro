@@ -20,6 +20,15 @@ export default function TalkToAstrologer() {
     ...new Set(
       [].concat.apply(
         [],
+        state.map((item, i) => item.key)
+      )
+    ),
+  ];
+
+  const skill2 = [
+    ...new Set(
+      [].concat.apply(
+        [],
         data.astrologer.map((item, i) => item.key)
       )
     ),
@@ -29,29 +38,62 @@ export default function TalkToAstrologer() {
     ...new Set(
       [].concat.apply(
         [],
+        state.map((item, i) => item.lang)
+      )
+    ),
+  ];
+
+  const language2 = [
+    ...new Set(
+      [].concat.apply(
+        [],
         data.astrologer.map((item, i) => item.lang)
       )
     ),
   ];
 
-  // console.log(
-  //   state.filter((item) => {
-  //     return item.lang.filter((i) =>  ["marathi"].includes(i));
-  //   })
-  // );
+  const gender = [
+    ...new Set(
+      [].concat.apply(
+        [],
+        state.map((item, i) => item.gender)
+      )
+    ),
+  ];
+
+  const gender2 = [
+    ...new Set(
+      [].concat.apply(
+        [],
+        data.astrologer.map((item, i) => item.gender)
+      )
+    ),
+  ];
+  console.log(gender);
 
   const handlefilter = (e) => {
     console.log(e);
-    const arr = state.filter((item) => {
+    const arr = data.astrologer.filter((item) => {
       return (
-        // e.gender.includes(item.gender) &&
-        // item.key.filter((i) => (e.skill.includes(i) ? i : "")) &&
-        item.lang.map((i) => e.lang.includes(i))
+        item.lang.some((i) => {
+          return e.lang.includes(i);
+        }) &&
+        e.gender.some((i) => {
+          return i === item.gender;
+        }) &&
+        item.key.some((i) => {
+          return e.skill.includes(i);
+        })
       );
     });
     console.log(arr);
-    // setstate(arr);
+    setstate(arr);
   };
+  const [filterval, setfilterval] = useState({
+    skill: skill2,
+    language: language2,
+    gender:gender2
+  });
 
   // console.log(state);
 
@@ -61,6 +103,8 @@ export default function TalkToAstrologer() {
         <>
           <BlurBackground />
           <Filter
+            activegender={gender}
+            filter={filterval}
             passfilter={handlefilter}
             activelanguage={language}
             activeskill={skill}
@@ -155,7 +199,7 @@ export default function TalkToAstrologer() {
           </div>
         ) : (
           <h2 className="font-bold mx-auto text-center px-5">
-            Please Write Correct Astrologer Name
+            Please Write Correct Astrologer Details
           </h2>
         )}
       </div>
@@ -233,4 +277,5 @@ export const color = {
   kp: "bg-yellow-100",
   lalkitab: "bg-indigo-100",
   nadi: "bg-cyan-100",
+  horary: "bg-fuchsia-100",
 };

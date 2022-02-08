@@ -32,6 +32,7 @@
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["bengali", "gujarati"],
       "exp": "12",
+      "gender": "female",
       "price": "30",
       "key": ["kp", "lal kitab"]
     },
@@ -40,6 +41,7 @@
       "imgs": "/imgs/profile1.jpg",
       "lang": ["hindi", "english", "bengali"],
       "exp": "1",
+      "gender": "male",
       "price": "100",
       "key": ["vedic", "numerology"]
     },
@@ -49,6 +51,7 @@
       "lang": ["hindi", "english"],
       "exp": "15",
       "price": "36",
+      "gender": "male",
       "key": ["vastu", "numerology"]
     },
     {
