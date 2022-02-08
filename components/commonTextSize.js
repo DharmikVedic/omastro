@@ -11,9 +11,9 @@ export default function Header(props) {
 }
 
 export function Paragraph(props) {
-  const extra = props.extra || "text-zinc-700";
+  const extra = props.extra || "text-zinc-700  md:text-xl text-lg";
   return (
-    <p style={{ lineHeight: 1.6 }} className={`${extra}  md:text-xl text-lg`}>
+    <p style={{ lineHeight: 1.6 }} className={`${extra} `}>
       {props.children}
     </p>
   );

@@ -13,11 +13,11 @@ export default function Footer() {
     ],
   };
   return (
-    <div className="py-28 bg-zinc-800">
+    <div className="pt-28 bg-zinc-800">
       <div className="max-w-7xl px-5 mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 place-items-start gap-x-10 gap-y-14">
         <div className="flex flex-col gap-5 cursor-default w-full">
           <div className="w-[60px]">
-            <img src="/imgs/logo.jpg" alt="logo" className="h-full" />
+            <img src="/imgs/logo.jpg" alt="logo" className="w-full" />
           </div>
           <p className="text-lg text-zinc-300">
             Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -28,7 +28,7 @@ export default function Footer() {
         </div>
         <div className=" w-full flex sm:justify-center md:justify-center">
           <div className="flex flex-col gap-6">
-            <h4 className="text-zinc-100">{menulink.title}</h4>
+            <h5 className="text-zinc-100">{menulink.title}</h5>
             <ul className="flex flex-col  gap-3 text-lg">
               {menulink.link.map((item, i) => (
                 <li
@@ -46,14 +46,14 @@ export default function Footer() {
 
         <div className="flex  md:justify-center w-full">
           <div className="flex flex-col gap-6">
-            <h4 className="text-zinc-100">Contact Us</h4>
+            <h5 className="text-zinc-100">Contact Us</h5>
             <div className="text-lg text-zinc-200 flex flex-col gap-2">
               <span>Phone: +91-1234567756</span>
               <span>Email: abc@homeastro.com</span>
             </div>
             <div>
               <div className="flex flex-col gap-5 border-t border-zinc-300 pt-6">
-                <span className=" whitespace-nowrap text-xl text-zinc-100">
+                <span className="text-base whitespace-nowrap text-xl text-zinc-100">
                   Follow Us On
                 </span>
                 <div className="flex gap-4   justify-between max-w-max w-full ">
@@ -120,8 +120,8 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className=" w-full flex sm:justify-center  text-zinc-100 text-3xl font-semibold">
-          <div className="flex flex-col gap-8">
+        <div className=" w-full flex sm:justify-center  text-zinc-100 text-2xl font-semibold">
+          <div className="flex flex-col gap-5">
             Download App
             <div className="flex gap-5 flex-col max-w-[170px] w-full">
               <a href="/" rel="noreferrer" target="_blank">
@@ -140,6 +140,11 @@ export default function Footer() {
               </a>
             </div>
           </div>
+        </div>
+      </div>
+      <div className="px-5">
+        <div className="border-t mt-10 px-5 text-zinc-400 text-sm max-w-7xl mx-auto w-full border-zinc-300  py-10">
+          @2021 Home Astro
         </div>
       </div>
     </div>

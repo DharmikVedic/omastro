@@ -92,11 +92,12 @@ export default function TalkToAstrologer() {
   const [filterval, setfilterval] = useState({
     skill: skill2,
     language: language2,
-    gender:gender2
+    gender: gender2,
   });
 
   // console.log(state);
 
+  const router = useRouter();
   return (
     <>
       {filter && (
@@ -140,7 +141,10 @@ export default function TalkToAstrologer() {
             </div>
 
             <div className="flex md:gap-6 gap-4 ">
-              <button className="bg-green-500 md:flex hidden hover:bg-green-600 py-2 px-5 rounded-md text-white font-bold">
+              <button
+                onClick={() => router.push("/add-wallet-money")}
+                className="bg-green-500 md:flex hidden hover:bg-green-600 py-2 px-5 rounded-md text-white font-bold"
+              >
                 Recharge
               </button>
               <button

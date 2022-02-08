@@ -36,4 +36,16 @@
   a {
     @apply transition duration-100 ease-in;
   }
+  .labelt {
+    @apply origin-[0]  absolute left-0 top-3  transition-all cursor-text	 duration-100 ease-in font-semibold;
+  }
+
+  .st:focus-within ~ label,
+  .st:not(:placeholder-shown) ~ label {
+    @apply transform scale-75 -translate-y-6 top-2;
+  }
+
+  .st:focus-within ~ label {
+    @apply text-green-500;
+  }
 }

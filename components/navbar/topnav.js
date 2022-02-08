@@ -18,7 +18,7 @@ function Topnav() {
         const window1 = e.currentTarget;
         const scroll =
           window1.pageYOffset || document.documentElement.scrollTop;
-        if (scroll > 130) {
+        if (scroll > 100) {
           sety(true);
         } else {
           sety(false);
@@ -67,7 +67,10 @@ function Topnav() {
             />
           </button>
           <div className=" flex gap-5">
-            <div className="border items-center flex gap-4 shadow-md shadow-red-400/20 border-red-500 md:hidden  py-1.5 px-2 rounded-md text-zinc-800 font-bold">
+            <div
+              onClick={() => router.push("/add-wallet-money")}
+              className="border items-center flex gap-4 shadow-md shadow-red-400/20 border-red-500 md:hidden  py-1.5 px-2 rounded-md text-zinc-800 font-bold"
+            >
               <svg
                 className="w-6 h-6 fill-red-500"
                 id="Layer_1"
