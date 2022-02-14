@@ -1,10 +1,17 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 import Section from "../components/commonSection";
 import Header, { Paragraph } from "../components/commonTextSize";
+import { supabase } from "../components/supabase/supaclient";
 
 export default function Home() {
+  useEffect(async () => {
+    const { data, error } = await supabase.from("astrologerProfile").select();
+
+    console.log(data);
+  }, []);
+
   const review = [
     {
       user: "/imgs/avatar-2.jpeg",

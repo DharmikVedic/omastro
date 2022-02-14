@@ -1,10 +1,15 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import useCurrentAstrologer from "../../components/context/profileContextvalue";
 import Filter from "../../components/filtercomponent/filter";
 import { BlurBackground } from "../../components/utils/feature";
 const data = require("../../components/jsondata/astrologerdata.json");
 export default function TalkToAstrologer() {
   const [filter, setfilter] = useState(false);
+
+  const { profile } = useCurrentAstrologer();
+
+
 
   const [state, setstate] = useState(data.astrologer);
 
@@ -69,10 +74,8 @@ export default function TalkToAstrologer() {
       )
     ),
   ];
-  console.log(gender);
 
   const handlefilter = (e) => {
-    console.log(e);
     const arr = data.astrologer.filter((item) => {
       return (
         item.lang.some((i) => {
@@ -86,7 +89,6 @@ export default function TalkToAstrologer() {
         })
       );
     });
-    console.log(arr);
     setstate(arr);
   };
   const [filterval, setfilterval] = useState({
@@ -115,7 +117,7 @@ export default function TalkToAstrologer() {
       )}
       <div className="pb-36 bg-zinc-50 pt-28 md:py-36  sm:px-10 flex flex-col gap-14 w-full">
         <div className="flex w-full md:flex-row flex-col-reverse  justify-between gap-7 md:gap-16 items-center max-w-7xl px-5 mx-auto">
-          <div className="text-lg md:block hidden font-semibold  shadow-md shadow-red-300/20 text-red-400 bg-white border-2 border-red-400 py-2 rounded-md max-w-[280px] text-center w-full px-5">
+          <div className="text-lg md:block hidden font-semibold  shadow-md shadow-green-300/20 text-green-500 bg-white border-2 border-green-500 py-2 rounded-md max-w-[280px] text-center w-full px-5">
             Available balance: ₹ 0
           </div>
           <div className="flex justify-between gap-5 items-center flex-row   md:gap-10 overflow-x-scroll   w-full py-2 ">
@@ -172,25 +174,6 @@ export default function TalkToAstrologer() {
                 </svg>
                 Filter
               </button>
-              {/* <select
-                name="month"
-                value={" "}
-                className="text-zinc-500 p-2 border-2 w-[120px] cursor-pointer hover:border-zinc-800 rounded-md focus:outline-none focus:border-black border-zinc-400"
-              >
-                <option value>Sort By</option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-              </select> */}
             </div>
           </div>
         </div>
@@ -213,6 +196,8 @@ export default function TalkToAstrologer() {
 
 const AstrologerCard = (props) => {
   const router = useRouter();
+  const { storeCurrentAstrologer } = useCurrentAstrologer();
+
   return (
     <div
       onClick={() =>
@@ -265,7 +250,10 @@ const AstrologerCard = (props) => {
         <p>
           <span className="font-semibold">₹</span> {props.data.price}/min
         </p>
-        <button className="shadow-md hover:bg-green-600 shadow-green-500/40 right-3 bottom-0 absolute bg-green-500 text-white  font-bold rounded-lg max-w-max px-7  py-1.5">
+        <button
+          onClick={() => storeCurrentAstrologer(props.data.id, "")}
+          className="shadow-md hover:bg-green-600 shadow-green-500/40 right-3 bottom-0 absolute bg-green-500 text-white  font-bold rounded-lg max-w-max px-7  py-1.5"
+        >
           Call
         </button>
       </div>

@@ -2,6 +2,7 @@
   "astrologer": [
     {
       "name": "gopal",
+      "id": "abc@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["hindi", "english"],
       "exp": "15",
@@ -11,6 +12,7 @@
     },
     {
       "name": "raj",
+      "id": "raj@gopal",
       "lang": ["hindi"],
       "imgs": "/imgs/avatar-2.jpeg",
       "exp": "10",
@@ -20,6 +22,7 @@
     },
     {
       "name": "ankit",
+      "id": "raj@gopal",
       "imgs": "/imgs/profile2.jpg",
       "lang": ["hindi", "english"],
       "exp": "10",
@@ -29,6 +32,8 @@
     },
     {
       "name": "jay",
+      "id": "raj@gopal",
+
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["bengali", "gujarati"],
       "exp": "12",
@@ -38,6 +43,7 @@
     },
     {
       "name": "shadow",
+      "id": "raj@gopal",
       "imgs": "/imgs/profile1.jpg",
       "lang": ["hindi", "english", "bengali"],
       "exp": "1",
@@ -47,6 +53,7 @@
     },
     {
       "name": "gopal2",
+      "id": "raj@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["hindi", "english"],
       "exp": "15",
@@ -56,6 +63,7 @@
     },
     {
       "name": "gopal3",
+      "id": "raj@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["hindi", "english"],
       "exp": "15",
@@ -65,6 +73,7 @@
     },
     {
       "name": "gopal4",
+      "id": "raj@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["hindi", "english"],
       "exp": "15",
@@ -83,6 +92,7 @@
     },
     {
       "name": "gopal6",
+      "id": "raj@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["hindi", "english"],
       "exp": "15",
@@ -92,6 +102,7 @@
     },
     {
       "name": "gopal7",
+      "id": "raj@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["hindi", "english"],
       "exp": "15",
@@ -101,6 +112,7 @@
     },
     {
       "name": "gopal8",
+      "id": "raj@gopal",
       "lang": ["hindi", "english"],
       "exp": "15",
       "imgs": "/imgs/avatar-2.jpeg",
@@ -110,6 +122,7 @@
     },
     {
       "name": "gopal9",
+      "id": "raj@gopal",
       "lang": ["hindi", "english"],
       "exp": "15",
       "imgs": "/imgs/avatar-2.jpeg",
@@ -119,6 +132,7 @@
     },
     {
       "name": "gopal10",
+      "id": "raj@gopal",
       "lang": ["hindi", "english"],
       "exp": "15",
       "price": "36",
@@ -128,6 +142,7 @@
     },
     {
       "name": "kevin",
+      "id": "raj@gopal",
       "imgs": "/imgs/avatar-2.jpeg",
       "lang": ["marathi", "english"],
       "exp": "45",
@@ -137,6 +152,7 @@
     },
     {
       "name": "mangal",
+      "id": "raj@gopal",
       "lang": ["hindi", "english"],
       "exp": "2",
       "gender": "male",
@@ -146,6 +162,7 @@
     },
     {
       "name": "gopal11",
+      "id": "raj@gopal",
       "lang": ["hindi", "english"],
       "exp": "15",
       "imgs": "/imgs/avatar-2.jpeg",
@@ -158,6 +175,7 @@
       "lang": ["hindi", "english"],
       "exp": "15",
       "imgs": "/imgs/avatar-2.jpeg",
+      "id": "raj@gopal",
       "price": "36",
       "gender": "female",
       "key": ["vastu", "numerology"]
@@ -165,6 +183,7 @@
     {
       "name": "ropal",
       "lang": ["hindi", "english"],
+      "id": "raj@gopal",
       "exp": "15",
       "imgs": "/imgs/avatar-2.jpeg",
       "gender": "male",

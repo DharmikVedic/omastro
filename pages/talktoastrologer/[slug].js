@@ -31,13 +31,13 @@ export default function Astrologer({ data }) {
   const [rechargepop, setrechargepop] = useState(false);
   return (
     <>
-      {rechargepop && <BlurBackground />}
+      {/* {rechargepop && <BlurBackground />}
       <RechargeWallet
         passactive={() => setrechargepop(false)}
         transition={`${
           rechargepop ? " opacity-100 visible" : " opacity-0 invisible"
         }`}
-      />
+      /> */}
       <div className="py-40 bg-zinc-50 px-5">
         <div className="bg-white flex flex-col gap-12 md:gap-20 max-w-5xl mx-auto shadow-lg rounded-[20px] md:px-16 px-10 py-8 md:py-16">
           <div className=" flex gap-12 md:gap-20 md:flex-row flex-col items-center">
@@ -110,7 +110,7 @@ export default function Astrologer({ data }) {
               >
                 <svg
                   viewBox="0 0 48 48"
-                  className="w-7  h-7 fill-white"
+                  className="w-5  h-5 fill-white"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M0 0h48v48h-48z" fill="none" />
