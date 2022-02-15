@@ -1,9 +1,13 @@
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 
-export function BlurBackground() {
+export function BlurBackground(props) {
   return (
-    <div className="fixed z-10 bg-gray-700 opacity-70 w-full h-full top-0 left-0"></div>
+    <div
+      className={`${
+        props?.z ? props.z : "z-10"
+      } fixed  bg-gray-700 opacity-70 w-full h-full top-0 left-0`}
+    ></div>
   );
 }
 

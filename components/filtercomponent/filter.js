@@ -79,7 +79,6 @@ export default function Filter(props) {
   const [activeskill, setactiveskill] = useState(props.activeskill);
 
   const handleFilter = (e) => {
-    console.log(e);
     if (
       activegender.every((i) => i === "") ||
       activelanguage.every((j) => j === "") ||
@@ -90,7 +89,7 @@ export default function Filter(props) {
       props.passactive(true);
       props.passfilter({
         skill: activeskill,
-        lang: activelanguage,
+        language: activelanguage,
         gender: activegender,
       });
     }
@@ -276,9 +275,6 @@ const SelectButton = (props) => {
       props.handle((prev) => [...prev, e.target.value]);
     }
   };
-
-  console.log(props.active, props.name);
-
   return (
     <div
       className={`${
@@ -286,12 +282,12 @@ const SelectButton = (props) => {
       } flex justify-start py-2 px-2 rounded-md`}
     >
       <label
-        className="flex cursor-pointer gap-2 w-full items-center flex-row"
+        className="flex capitalize cursor-pointer gap-2 w-full items-center flex-row"
         htmlFor={props.name}
       >
         <input
           type="checkbox"
-          className="accent-red-500 w-3 h-3 "
+          className="!accent-red-500 rounded w-3 h-3 appearance-none"
           id={props.name}
           value={props.name}
           checked={props.active === props.name.toLowerCase()}

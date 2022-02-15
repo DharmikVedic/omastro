@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import useUserData from "../context/logincontextvalue";
+import CombineForm from "../form/combineForm";
+import { BlurBackground } from "../utils/feature";
 import Mobilenav from "./mobilenav";
 
 function Topnav() {
@@ -8,7 +11,11 @@ function Topnav() {
   const [displaymenu, setdisplamenu] = useState();
   const url = router.asPath.split("/")[1];
   const [y, sety] = useState(false);
+  const [login, setlogin] = useState(false);
   const [mouted, setmouted] = useState(false);
+
+  const { user } = useUserData();
+
 
   useEffect(() => {
     setmouted(true);
@@ -34,8 +41,23 @@ function Topnav() {
   const handleclose = (e) => {
     setdisplamenu((prev) => !prev);
   };
+
+  const handleclose2 = () => {
+    setlogin(false);
+  };
+
+  const {signOut} = useUserData();
   return (
     <>
+      {login && <BlurBackground z="z-30" />}
+      <CombineForm
+        passactive={handleclose2}
+        transition={
+          login
+            ? "-translate-y-1/2 opacity-100 visible"
+            : "translate-y-0 opacity-0 invisible"
+        }
+      />
       <Mobilenav
         transition={
           displaymenu
@@ -104,7 +126,7 @@ function Topnav() {
                 />
               </svg>
             </button>
-            <ul className="md:flex gap-10 text-lg text-zinc-800  hidden">
+            <ul className="md:flex gap-10 text-lg text-zinc-800 items-center  hidden">
               <li
                 className={`${url === "" ? "text-rose-500" : "text-zinc-800"} `}
               >
@@ -125,6 +147,25 @@ function Topnav() {
                   </a>
                 </Link>
               </li>
+              {user !== null ? (
+                <div className="relative group py-2 cursor-default">
+                  <div className="border-2  shadow-lg shadow-red-300/30 border-red-500 text-sm text-red-500 font-semibold py-1 px-4 rounded-md">
+                    {user?.email}
+                    <button
+                    onClick={async()=> await signOut()}
+                    className="group-hover:opacity-100 cursor-pointer group-hover:visible invisible opacity-0 absolute top-full left-0  py-2 px-7 bg-zinc-100 rounded-md text-zinc-800 ">
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <li
+                  onClick={() => setlogin(true)}
+                  className="font-semibold cursor-pointer"
+                >
+                  Login
+                </li>
+              )}
             </ul>
           </div>
         </div>
