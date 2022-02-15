@@ -1,7 +1,5 @@
-import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
 import useCurrentAstrologer from "../context/profileContextvalue";
-import { db } from "../firebase/firebaseinitialization";
 import Sample from "./asynctypehead";
 
 export default function UserProfileForm(props) {
