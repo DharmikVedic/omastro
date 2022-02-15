@@ -1,11 +1,15 @@
 const astrologer = require("../../components/jsondata/astrologerdata.json");
 import React, { useState } from "react";
 import { color } from ".";
-import { BlurBackground, RechargeWallet } from "../../components/utils/feature";
+import { supabase } from "../../components/supabase/supaclient";
+// import { BlurBackground, RechargeWallet } from "../../components/utils/feature";
 
 export async function getStaticPaths() {
   let paths = [];
-  astrologer.astrologer.map((item) => {
+
+  const { data, error } = await supabase.from("astrologerProfile").select("*");
+
+  data.map((item) => {
     paths.push({
       params: { slug: item.name.split(" ").join("").toLowerCase() },
     });
@@ -18,9 +22,10 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
+  const { data, error } = await supabase.from("astrologerProfile").select("*");
   return {
     props: {
-      data: astrologer.astrologer.filter(
+      data: data.filter(
         (item) => item.name.split(" ").join("").toLowerCase() === params.slug
       ),
     },
@@ -29,6 +34,9 @@ export async function getStaticProps({ params }) {
 
 export default function Astrologer({ data }) {
   const [rechargepop, setrechargepop] = useState(false);
+
+  console.log(data);
+
   return (
     <>
       {/* {rechargepop && <BlurBackground />}
@@ -43,7 +51,7 @@ export default function Astrologer({ data }) {
           <div className=" flex gap-12 md:gap-20 md:flex-row flex-col items-center">
             <div className="md:w-[450px] w-[270px] md:h-[280px] h-[270px]">
               <img
-                src={data[0].imgs}
+                src="/imgs/avatar-2.jpeg"
                 className="w-full rounded-full h-full object-cover"
                 alt="astrologer"
               />
@@ -79,34 +87,45 @@ export default function Astrologer({ data }) {
                 </span>
               </div>
               <div className="flex gap-4 overflow-x-scroll w-full py-1">
-                {data[0].key.map((item, i) => (
-                  <span
-                    key={i}
-                    className={`capitalize px-3 py-1 text-[16px] rounded-md text-sm font-semibold ${
-                      color[item.toLowerCase()]
-                    }`}
-                  >
-                    {item}
-                  </span>
-                ))}
+                {data[0].expert
+                  .toString()
+                  .split(",")
+                  .map((item, i) => (
+                    <span
+                      key={i}
+                      className={`capitalize px-3 py-1 text-[16px] rounded-md text-sm font-semibold ${
+                        color[item.toLowerCase()]
+                      }`}
+                    >
+                      {item}
+                    </span>
+                  ))}
               </div>
               <div className="flex gap-2 text-zinc-800 overflow-x-scroll w-full py-1">
                 <span className="font-semibold">Lang:</span>
-                {data[0].lang.map((item, i) => (
-                  <span
-                    key={i}
-                    className={`capitalize  ${color[item.toLowerCase()]}`}
-                  >
-                    {item},
-                  </span>
-                ))}
+                {data[0].language
+                  .toString()
+                  .split(",")
+                  .map((item, i) => (
+                    <span
+                      key={i}
+                      className={`capitalize  ${color[item.toLowerCase()]}`}
+                    >
+                      {item},
+                    </span>
+                  ))}
               </div>
               <div className="text-zinc-800 font-semibold">
                 Exp: <span className="font-normal">{data[0].exp} Years</span>
               </div>
               <button
                 onClick={() => setrechargepop(true)}
-                className="mt-2 max-w-xs gap-10 w-full hover:bg-green-600 hover:scale-[1.1] transition-all duration-150 ease-in bg-green-500 items-center justify-between  flex  py-3 px-6 rounded-full text-white font-bold text-lg"
+                disabled={!data[0].isActive}
+                className={`${
+                  data[0].isActive
+                    ? "hover:bg-green-600 bg-green-500  hover:scale-[1.1] cursor-pointer"
+                    : "bg-red-500 opacity-70 cursor-not-allowed"
+                } mt-2 max-w-xs gap-10 w-full  transition-all duration-150 ease-in  items-center justify-between  flex  py-3 px-6 rounded-full text-white font-bold text-lg`}
               >
                 <svg
                   viewBox="0 0 48 48"
@@ -126,14 +145,7 @@ export default function Astrologer({ data }) {
               style={{ lineHeight: 1.8 }}
               className="max-w-3xl sm:text-base text-sm mx-auto text-center"
             >
-              Dummy astrologer is an Expert KP Astrologer with 15 years of
-              Experience in Professional Astrology Consultancy. He also knows
-              Numerology & Vedic Astrology As Well. He can speak Hindi, Bengali
-              and English language for phone consultation. You can consult him
-              for KP Astrology for your marriage life problems, late marriage,
-              Love marriage or arrange marriage prediction, Government Job
-              predictions, Future predictions. Just click on Call button to
-              Consult Acharya Suvendu Sabitri now.
+              {data[0].desc}
             </p>
           </div>
         </div>

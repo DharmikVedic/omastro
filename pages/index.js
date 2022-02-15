@@ -6,11 +6,7 @@ import Header, { Paragraph } from "../components/commonTextSize";
 import { supabase } from "../components/supabase/supaclient";
 
 export default function Home() {
-  useEffect(async () => {
-    const { data, error } = await supabase.from("astrologerProfile").select();
 
-    console.log(data);
-  }, []);
 
   const review = [
     {

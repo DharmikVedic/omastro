@@ -1,8 +1,6 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import useUserData from "../context/logincontextvalue";
-import { db } from "../firebase/firebaseinitialization";
+import { supabase } from "../supabase/supaclient";
 
 export default function AstrologerLogin(props) {
   const initialValue = {
@@ -11,7 +9,6 @@ export default function AstrologerLogin(props) {
   };
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
-  const { storeastrologerdata } = useUserData();
   if (error) {
     setTimeout(() => seterror(""), 2000);
   }
@@ -25,23 +22,35 @@ export default function AstrologerLogin(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputvalue.email !== "" && inputvalue.password !== "") {
-      const q1 = query(
-        collection(db, "astrologerSignup"),
-        where("email", "==", inputvalue.email),
-        where("password", "==", inputvalue.password)
-      );
-      if ((await getDocs(q1)).size > 0) {
-        alert("login successfull");
-        router.push("/astrologer-admin");
-        const q = (await getDocs(q1)).docs.forEach((r) => {
-          storeastrologerdata({ email: r.data().email, name: r.data().name });
-        });
+      const { data, error } = await supabase
+        .from("astrologerSignup")
+        .select("email, password")
+        .match({ email: inputvalue.email, password: inputvalue.password });
+
+      if (data.length > 0) {
+        handlelocal();
       } else {
-        seterror("please write correct password or email");
+        seterror("Invalid login credential");
       }
     } else {
       seterror("All details must be filled");
     }
+  };
+
+  const handlelocal = async () => {
+    const { data, error } = await supabase
+      .from("astrologerSignup")
+      .select("*")
+      .eq("email", inputvalue.email);
+    console.log(data);
+    localStorage.setItem(
+      "astrologerSignup",
+      JSON.stringify({
+        name: data[0].name,
+        email: data[0].email,
+      })
+    );
+    router.push("/astrologer-admin");
   };
 
   return (

@@ -16,7 +16,7 @@ export default function Layout(props) {
         <>
           {url === "astrologer-admin" ? (
             <div>
-              <Topbar2 />
+              {/* <Topbar2 /> */}
               <div className="bg-white min-h-screen">{props.children}</div>
             </div>
           ) : (

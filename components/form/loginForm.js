@@ -10,7 +10,7 @@ export default function LoginForm(props) {
   };
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
-  const { storeuserdata } = useUserData();
+  const { signIn } = useUserData();
 
   if (error) {
     setTimeout(() => seterror(""), 2000);
@@ -23,19 +23,11 @@ export default function LoginForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputvalue.email !== "" && inputvalue.password !== "") {
-      const q1 = query(
-        collection(db, "usersignup"),
-        where("email", "==", inputvalue.email),
-        where("password", "==", inputvalue.password)
-      );
-      if ((await getDocs(q1)).size > 0) {
-        alert("login successfull");
-        props.passactive(true);
-        const q = (await getDocs(q1)).docs.forEach((r) =>
-          storeuserdata({ email: r.data().email, name: r.data().name })
-        );
+      const { error } = await signIn(inputvalue);
+      if (error) {
+        seterror("Invalid login credential");
       } else {
-        seterror("please write correct password or email");
+        props.passactive(true);
       }
     } else {
       seterror("All details must be filled");
@@ -99,6 +91,7 @@ export default function LoginForm(props) {
             Sign in
           </button>
         </div>
+
       </form>
     </>
   );

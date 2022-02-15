@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { setDoc, doc, serverTimestamp, getDoc } from "firebase/firestore";
+import React, { useState } from "react";
 
-import { db } from "../firebase/firebaseinitialization";
 import useUserData from "../context/logincontextvalue";
 import { supabase } from "../supabase/supaclient";
 
@@ -14,7 +12,7 @@ export default function RegisterForm(props) {
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
 
-  const { storeuserdata } = useUserData();
+  const { signUp } = useUserData();
 
   if (error) {
     setTimeout(() => seterror(""), 2000);
@@ -25,53 +23,26 @@ export default function RegisterForm(props) {
     setvalue({ ...inputvalue, [name]: value });
   };
 
-  //   console.log(querySnapshot);
-  //   useEffect(async () => {
-  //     const q = query(
-  //       collection(db, "usersignup"),
-  //       where("email", "==", "kevin@gmail.com")
-  //     );
-  //     const querySnapshot = await getDoc(
-  //       doc(db, "usersignup", "kevin@gmail.com")
-  //     );
-  //     // querySnapshot.forEach((doc) => {
-  //     //   // doc.data() is never undefined for query doc snapshots
-  //     //   console.log(doc.id, " => ", doc.data());
-  //     // });
-  //     console.log(querySnapshot.exists());
-  //   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputvalue.email !== "" && inputvalue.password !== "") {
-      // const querySnapshot = await getDoc(
-      //   doc(db, "usersignup", inputvalue.email)
-      // );
-      // // console.log(querySnapshot.exists());
-      // if (querySnapshot.exists()) {
-      //   alert("exits");
-      //   seterror("Email is already register try to login");
-      // } else {
-        props.passactive(true);
-        const { user, session, error } = await supabase.auth.signUp(
-          {
-            email: inputvalue.email,
-            password: inputvalue.password,
+      const { error } = signUp(
+        {
+          email: inputvalue.email,
+          password: inputvalue.password,
+        },
+        {
+          data: {
+            first_name: inputvalue.name,
           },
-          {
-            data: {
-              name: inputvalue.name,
-            },
-          }
-        );
-
-        console.log(user, session, error);
-        storeuserdata({ email: inputvalue.email, name: inputvalue.name });
-        // setDoc(doc(db, "usersignup", inputvalue.email), {
-        //   timestamp: serverTimestamp(),
-        //   ...inputvalue,
-        // });
-      // }
+        }
+      );
+      if (error) {
+        alert("error while sign in");
+        seterror("Email is already register");
+      } else {
+        props.passactive(true);
+      }
     } else {
       seterror("All details must be filled");
     }

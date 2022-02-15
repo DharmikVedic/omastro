@@ -2,30 +2,67 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import useCurrentAstrologer from "../../components/context/profileContextvalue";
 import Filter from "../../components/filtercomponent/filter";
+import { supabase } from "../../components/supabase/supaclient";
 import { BlurBackground } from "../../components/utils/feature";
 const data = require("../../components/jsondata/astrologerdata.json");
 export default function TalkToAstrologer() {
   const [filter, setfilter] = useState(false);
-
-  const { profile } = useCurrentAstrologer();
-
-
-
-  const [state, setstate] = useState(data.astrologer);
-
+  const [rerender, setrerender] = useState(false);
+  const [state, setstate] = useState([]);
+  const [allastrologer, setastrolger] = useState([]);
   const handleSearch = (e) => {
     const { value } = e.target;
-    const arr = data.astrologer.filter((item) =>
+    const arr = allastrologer.filter((item) =>
       item.name.includes(value.toLowerCase())
     );
     setstate(arr);
+  };
+
+  useEffect(async () => {
+    const d = await fetchAstrologer();
+    setstate(d);
+    setastrolger(d);
+  }, []);
+
+  useEffect(async () => {
+    const d = await fetchAstrologer();
+    const mySubscription = supabase
+      .from("astrologerProfile")
+      .on("*", (payload) => {
+        // console.log("Change received!", payload);
+        if (payload.new) {
+          const index = d.findIndex(
+            (el) => el.astrologerId === payload.new.astrologerId
+          );
+          if (index === -1) {
+            d.push(payload.new);
+          } else {
+            d[index] = payload.new;
+          }
+          setastrolger(d);
+          setstate(d);
+          setrerender((prev) => !prev);
+          // console.log(index);
+        }
+        // setastrolger()
+      })
+      .subscribe();
+  }, [rerender]);
+
+  const fetchAstrologer = async () => {
+    const { data, error } = await supabase
+      .from("astrologerProfile")
+      .select("*")
+      .order("id", { isActive: true });
+
+    return data;
   };
 
   const skill = [
     ...new Set(
       [].concat.apply(
         [],
-        state.map((item, i) => item.key)
+        state.map((item, i) => item.expert.toString().split(","))
       )
     ),
   ];
@@ -34,7 +71,7 @@ export default function TalkToAstrologer() {
     ...new Set(
       [].concat.apply(
         [],
-        data.astrologer.map((item, i) => item.key)
+        data.astrologer.map((item, i) => item.expert.toString().split(","))
       )
     ),
   ];
@@ -43,7 +80,7 @@ export default function TalkToAstrologer() {
     ...new Set(
       [].concat.apply(
         [],
-        state.map((item, i) => item.lang)
+        state.map((item, i) => item.language.toString().split(","))
       )
     ),
   ];
@@ -52,7 +89,7 @@ export default function TalkToAstrologer() {
     ...new Set(
       [].concat.apply(
         [],
-        data.astrologer.map((item, i) => item.lang)
+        data.astrologer.map((item, i) => item.language.toString().split(","))
       )
     ),
   ];
@@ -76,28 +113,33 @@ export default function TalkToAstrologer() {
   ];
 
   const handlefilter = (e) => {
-    const arr = data.astrologer.filter((item) => {
+    const arr = allastrologer.filter((item) => {
       return (
-        item.lang.some((i) => {
-          return e.lang.includes(i);
-        }) &&
+        item.language
+          .toString()
+          .split(",")
+          .some((i) => {
+            return e.language.includes(i);
+          }) &&
         e.gender.some((i) => {
           return i === item.gender;
         }) &&
-        item.key.some((i) => {
-          return e.skill.includes(i);
-        })
+        item.expert
+          .toString()
+          .split(",")
+          .some((i) => {
+            return e.skill.includes(i);
+          })
       );
     });
     setstate(arr);
   };
+
   const [filterval, setfilterval] = useState({
     skill: skill2,
     language: language2,
     gender: gender2,
   });
-
-  // console.log(state);
 
   const router = useRouter();
   return (
@@ -197,7 +239,6 @@ export default function TalkToAstrologer() {
 const AstrologerCard = (props) => {
   const router = useRouter();
   const { storeCurrentAstrologer } = useCurrentAstrologer();
-
   return (
     <div
       onClick={() =>
@@ -208,12 +249,18 @@ const AstrologerCard = (props) => {
             .toLowerCase()}`
         )
       }
-      className="shadow-md cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl"
+      className="shadow-md relative cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl"
     >
+      {props.data.isActive && (
+        <>
+          <span className="animate-ping absolute  bg-green-500 right-0  w-4 h-4 rounded-full top-0"></span>
+          <span className="absolute inline-flex right-0 top-0 rounded-full h-3.5 w-3.5 bg-green-500"></span>
+        </>
+      )}
       <div className="flex border-b pb-3 border-zinc-200 items-center gap-5 ">
         <div className="w-14 h-14">
           <img
-            src={props.data.imgs}
+            src="/imgs/avatar-2.jpeg"
             className="w-full h-full rounded-full"
             alt="demo"
           />
@@ -223,36 +270,48 @@ const AstrologerCard = (props) => {
           <span className="text-xs text-yellow-400"> ★★★★★</span>
         </div>
       </div>
-      <div className="flex flex-col gap-1 relative">
+      <div className="flex flex-col gap-2 relative">
         <p className="flex gap-3 py-1 overflow-x-scroll">
-          {props.data.key.map((item, i) => (
-            <span
-              key={i}
-              className={`py-1 capitalize ${
-                color[item.split(" ").join("").toLowerCase()]
-              } px-3 rounded-md text-sm shadow-sm shadow-zinc-300/80 text-zinc-800 font-semibold`}
-            >
-              {item}
-            </span>
-          ))}
+          {props.data.expert
+            .toString()
+            .split(",")
+            .map((item, i) => (
+              <span
+                key={i}
+                className={`py-1 capitalize ${
+                  color[item.split(" ").join("").toLowerCase()]
+                } px-3 rounded-md text-sm shadow-sm shadow-zinc-300/80 text-zinc-800 font-semibold`}
+              >
+                {item}
+              </span>
+            ))}
         </p>
         <p className="flex gap-1">
           <span className="font-semibold">Lang:</span>
-          {props.data.lang.map((item, i) => (
-            <span className="capitalize" key={i}>
-              {item},
-            </span>
-          ))}
+          {props.data.language
+            .toString()
+            .split(",")
+            .map((item, i) => (
+              <span className="capitalize" key={i}>
+                {item},
+              </span>
+            ))}
         </p>
         <p>
-          <span className="font-semibold">Exp:</span> {props.data.exp} Years,
+          <span className="font-semibold">Exp:</span> {props.data.experience}
+          {","}
         </p>
         <p>
           <span className="font-semibold">₹</span> {props.data.price}/min
         </p>
         <button
-          onClick={() => storeCurrentAstrologer(props.data.id, "")}
-          className="shadow-md hover:bg-green-600 shadow-green-500/40 right-3 bottom-0 absolute bg-green-500 text-white  font-bold rounded-lg max-w-max px-7  py-1.5"
+          onClick={() => storeCurrentAstrologer(props.data.astrologerId, "")}
+          disabled={!props.data.isActive}
+          className={`${
+            props.data.isActive
+              ? "hover:bg-green-600 shadow-green-500/40 bg-green-500 cursor-pointer "
+              : "shadow-red-500/40 bg-red-500 opacity-70 cursor-not-allowed"
+          } shadow-md  right-3 bottom-0 absolute text-white  font-bold rounded-lg max-w-max px-7  py-1.5`}
         >
           Call
         </button>

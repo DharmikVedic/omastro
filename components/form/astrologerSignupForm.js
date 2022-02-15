@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { setDoc, doc, serverTimestamp, getDoc } from "firebase/firestore";
-// const md5 = require("md5");
-// astrologerid: md5(inputvalue.email),
+import React, {  useState } from "react";
 
-import { db } from "../firebase/firebaseinitialization";
+
 import { useRouter } from "next/router";
 import useUserData from "../context/logincontextvalue";
+import { supabase } from "../supabase/supaclient";
 
 export default function AstrologerForm(props) {
   const initialValue = {
@@ -16,7 +14,6 @@ export default function AstrologerForm(props) {
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
 
-  const { storeastrologerdata } = useUserData();
 
   if (error) {
     setTimeout(() => seterror(""), 2000);
@@ -27,39 +24,23 @@ export default function AstrologerForm(props) {
     setvalue({ ...inputvalue, [name]: value });
   };
 
-  //   console.log(querySnapshot);
-  //   useEffect(async () => {
-  //     const q = query(
-  //       collection(db, "usersignup"),
-  //       where("email", "==", "kevin@gmail.com")
-  //     );
-  //     const querySnapshot = await getDoc(
-  //       doc(db, "usersignup", "kevin@gmail.com")
-  //     );
-  //     // querySnapshot.forEach((doc) => {
-  //     //   // doc.data() is never undefined for query doc snapshots
-  //     //   console.log(doc.id, " => ", doc.data());
-  //     // });
-  //     console.log(querySnapshot.exists());
-  //   }, []);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputvalue.email !== "" && inputvalue.password !== "") {
-      const querySnapshot = await getDoc(
-        doc(db, "astrologerSignup", inputvalue.email)
+      const { data, error } = await supabase.from("astrologerSignup").insert([
+        {
+          name: inputvalue.name,
+          email: inputvalue.email,
+          password: inputvalue.password,
+        },
+      ]);
+      localStorage.setItem(
+        "astrologerSignup",
+        JSON.stringify({ name: inputvalue.name, email: inputvalue.email })
       );
-      if (querySnapshot.exists()) {
-        alert("exits");
-        seterror("Email is already register try to login");
-      } else {
-        storeastrologerdata({ email: inputvalue.email, name: inputvalue.name });
-        router.push("/astrologer-admin/astroprofile-form");
-        setDoc(doc(db, "astrologerSignup", inputvalue.email), {
-          timestamp: serverTimestamp(),
-          ...inputvalue,
-        });
-      }
+      router.push("/astrologer-admin/astroprofile-form");
     } else {
       seterror("All details must be filled");
     }

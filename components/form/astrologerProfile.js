@@ -1,8 +1,6 @@
-import { doc, setDoc } from "firebase/firestore";
-import { Router } from "next/router";
+import { Router, useRouter } from "next/router";
 import React, { useState } from "react";
-import useCurrentAstrologer from "../context/profileContextvalue";
-import { db } from "../firebase/firebaseinitialization";
+import { supabase } from "../supabase/supaclient";
 const md5 = require("md5");
 
 export default function AstrologerProfileForm(props) {
@@ -19,12 +17,13 @@ export default function AstrologerProfileForm(props) {
   };
   const [formValue, setformValue] = useState(initialValue);
   const [formError, setformError] = useState(initialValue);
-
+  const router = useRouter();
   if (error) {
     setTimeout(() => seterror(null), 2000);
   }
   const submitingform = async (e) => {
-    const session = localStorage.getItem("astrologerdetail");
+    const session = JSON.parse(localStorage.getItem("astrologerSignup"));
+
     e.preventDefault();
     setformError(validay(formValue));
     if (Object.keys(validay(formValue)).length !== 0) {
@@ -32,18 +31,21 @@ export default function AstrologerProfileForm(props) {
       setformValue(formValue);
     } else if (Object.keys(validay(formValue)).length === 0) {
       let rea = Object.assign({}, formValue);
-      // Router.push("/astrologer-");
-      const data = await setDoc(doc(db, "astrologerProfile"), {
-        astrologerId: md5(JSON.parse(session.email)),
-        isActive: true,
-        ...rea,
-      });
+      const { data, error } = await supabase.from("astrologerProfile").insert([
+        {
+          ...rea,
+          email: session.email,
+          astrologerId: md5(session.email),
+        },
+      ]);
+      router.push("/astrologer-admin");
       seterror(null);
     } else {
       setformError(validay(formValue));
       seterror("Please enter correct day");
     }
   };
+
   const validay = (values) => {
     let error = {};
     if (!values.name) {
@@ -88,7 +90,7 @@ export default function AstrologerProfileForm(props) {
         className="max-w-xl   mx-auto bg-white shadow-lg  p-6 sm:p-10 rounded-md w-full flex  flex-col gap-8 md:gap-12 "
       >
         <h2 className="text-center">Astrolger Detail Form</h2>
-        <div className="flex gap-5">
+        <div className="flex md:flex-row flex-col gap-5 ">
           <div className="w-full flex relative  flex-col pt-2 gap-3 ">
             <label>Enter Your Full Name:</label>
             <input
@@ -105,7 +107,7 @@ export default function AstrologerProfileForm(props) {
               }  focus:border-green-500   caret-green-500   `}
             />
           </div>
-          <div className="w-full flex-col pt-2 gap-3 max-w-[170px]">
+          <div className="w-full flex-col pt-2 gap-3 md:max-w-[170px]">
             <label>Select Gender:</label>
             <select
               name="gender"
@@ -123,7 +125,7 @@ export default function AstrologerProfileForm(props) {
             </select>
           </div>
         </div>
-        <div className="w-full flex  gap-4 ">
+        <div className="w-full flex md:flex-row flex-col gap-4 ">
           <div className="flex flex-col gap-3 w-full">
             <label htmlFor="age" className="w-full">
               Enter Your Age:
@@ -159,7 +161,7 @@ export default function AstrologerProfileForm(props) {
             />
           </div>
         </div>
-        <div className="w-full flex  gap-4 ">
+        <div className="w-full flex md:flex-row flex-col gap-4 ">
           <div className="flex flex-col gap-3 w-full">
             <label htmlFor="language" className="w-full">
               Language:

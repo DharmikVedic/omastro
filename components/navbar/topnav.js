@@ -14,7 +14,7 @@ function Topnav() {
   const [login, setlogin] = useState(false);
   const [mouted, setmouted] = useState(false);
 
-  const { user, removeuserdata } = useUserData();
+  const { user } = useUserData();
 
 
   useEffect(() => {
@@ -45,6 +45,8 @@ function Topnav() {
   const handleclose2 = () => {
     setlogin(false);
   };
+
+  const {signOut} = useUserData();
   return (
     <>
       {login && <BlurBackground z="z-30" />}
@@ -148,9 +150,9 @@ function Topnav() {
               {user !== null ? (
                 <div className="relative group py-2 cursor-default">
                   <div className="border-2  shadow-lg shadow-red-300/30 border-red-500 text-sm text-red-500 font-semibold py-1 px-4 rounded-md">
-                    {user?.name}
+                    {user?.email}
                     <button
-                    onClick={()=> {console.log("logout");removeuserdata("userdata")}}
+                    onClick={async()=> await signOut()}
                     className="group-hover:opacity-100 cursor-pointer group-hover:visible invisible opacity-0 absolute top-full left-0  py-2 px-7 bg-zinc-100 rounded-md text-zinc-800 ">
                       Logout
                     </button>

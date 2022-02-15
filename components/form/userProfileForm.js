@@ -44,11 +44,13 @@ export default function UserProfileForm(props) {
       setformValue(formValue);
     } else if (Object.keys(validay(formValue)).length === 0) {
       let rea = Object.assign({}, formValue);
-      const data = await addDoc(collection(db, "userProfile"), {
-        astrologerId: profile.astrologer,
-        isActive: true,
-        ...rea,
-      });
+      const { data, error } = await supabase.from("astrologerProfile").insert([
+        {
+          ...rea,
+          email: session.email,
+          astrologerId: md5(session.email),
+        },
+      ]);
       storeCurrentAstrologer(profile.astrologer, data.id);
       seterror(null);
     } else {
