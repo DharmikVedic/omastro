@@ -25,7 +25,11 @@ export default function RegisterForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (inputvalue.email !== "" && inputvalue.password !== "") {
+    if (
+      inputvalue.email !== "" &&
+      inputvalue.password !== "" &&
+      inputvalue.password.length >= 6
+    ) {
       const { error } = signUp(
         {
           email: inputvalue.email,
@@ -43,6 +47,8 @@ export default function RegisterForm(props) {
       } else {
         props.passactive(true);
       }
+    } else if (inputvalue.password.length < 6) {
+      seterror("password must be 6 character");
     } else {
       seterror("All details must be filled");
     }

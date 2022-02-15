@@ -26,7 +26,7 @@ export default function CombineForm(props) {
     <>
       <div
         ref={ref}
-        className={`${props.transition} max-w-md w-full z-30 -translate-x-1/2 shadow-xl fixed top-1/2 left-1/2`}
+        className={`${props.transition} max-w-md px-5 w-full z-30 -translate-x-1/2 shadow-xl fixed top-1/2 left-1/2`}
       >
         <div className="flex">
           <button
