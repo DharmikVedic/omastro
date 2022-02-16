@@ -1,4 +1,3 @@
-
 // import "../components/AgoraRTC-N-4.2.1";
 // const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
@@ -19,7 +18,11 @@ export default function Home() {
       .then((r) => r.json())
       .then((d) => {
         console.log(d);
-        startBasicCall(d.token, d.uid, d.channel);
+        startBasicCall(
+          "006805fca18065d4589872cee8ad99784b3IAA1hyO8DvzEhaO5mKucyEJHb9Tus5xLSHY5RWjGR4s0WAx+f9gAAAAAIgDzxwcSYJIOYgQAAQBgkg5iAgBgkg5iAwBgkg5iBABgkg5i",
+          123,
+          "test"
+        );
       })
       .catch((err) => console.log(err));
   };
@@ -41,11 +44,6 @@ export default function Home() {
       uid: uid,
     };
 
-
-
-
-
-    
     // Create an AgoraRTCClient object.
     rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
@@ -106,7 +104,13 @@ export default function Home() {
 
         <button
           className="bg-red-400 p-3.5 text-zinc-800 w-40 rounded-md mt-5"
-          onClick={handlupdate}
+          onClick={() =>
+            startBasicCall(
+              "006805fca18065d4589872cee8ad99784b3IAA1hyO8DvzEhaO5mKucyEJHb9Tus5xLSHY5RWjGR4s0WAx+f9gAAAAAIgDzxwcSYJIOYgQAAQBgkg5iAgBgkg5iAwBgkg5iBABgkg5i",
+              123,
+              "test"
+            )
+          }
         >
           Start
         </button>
@@ -124,7 +128,6 @@ export default function Home() {
         >
           cancel
         </button>
-       
       </div>
     </>
   );
