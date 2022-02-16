@@ -48,7 +48,7 @@ export default function Mobilenav(props) {
             </svg>
           </div>
         </div>
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col justify-between pb-28 h-full">
           <ul className="py-10 px-5 flex flex-col gap-5">
             {user !== null ? (
               <div className="flex justify-between group py-2 cursor-default">
@@ -79,20 +79,12 @@ export default function Mobilenav(props) {
                   setlogin(true);
                   props.passclose(true);
                 }}
-                className="font-semibold  text-2xl  cursor-pointer"
+                className="font-semibold text-zinc-800 text-2xl  cursor-pointer"
               >
-                Login
+                SignIn
               </li>
             )}
 
-            <li
-              onClick={() => props.passclose(true)}
-              className="text-zinc-800 -rose-500  text-2xl font-semibold"
-            >
-              <Link href="/">
-                <a>Home</a>
-              </Link>
-            </li>
             <li
               onClick={() => props.passclose(true)}
               className="text-zinc-800 -rose-500 text-2xl font-semibold"

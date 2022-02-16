@@ -1,10 +1,12 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import useUserData from "../../components/context/logincontextvalue";
 import useCurrentAstrologer from "../../components/context/profileContextvalue";
 import Filter from "../../components/filtercomponent/filter";
 import { supabase } from "../../components/supabase/supaclient";
 import { BlurBackground } from "../../components/utils/feature";
 const data = require("../../components/jsondata/astrologerdata.json");
+
 export default function TalkToAstrologer() {
   const [filter, setfilter] = useState(false);
   const [rerender, setrerender] = useState(false);
@@ -17,6 +19,8 @@ export default function TalkToAstrologer() {
     );
     setstate(arr);
   };
+
+  const { user } = useUserData();
 
   useEffect(async () => {
     const d = await fetchAstrologer();
@@ -54,7 +58,6 @@ export default function TalkToAstrologer() {
       .from("astrologerProfile")
       .select("*")
       .order("id", { isActive: true });
-
     return data;
   };
 
@@ -157,14 +160,22 @@ export default function TalkToAstrologer() {
           />
         </>
       )}
-      <div className="pb-36 bg-zinc-50 pt-28 md:py-36  sm:px-10 flex flex-col gap-14 w-full">
-        <div className="flex w-full md:flex-row flex-col-reverse  justify-between gap-7 md:gap-16 items-center max-w-7xl px-5 mx-auto">
-          <div className="text-lg md:block hidden font-semibold  shadow-md shadow-green-300/20 text-green-500 bg-white border-2 border-green-500 py-2 rounded-md max-w-[280px] text-center w-full px-5">
-            Available balance: ₹ 0
-          </div>
+      <div className="pb-36 bg-white pt-28 md:py-36  sm:px-10 flex flex-col gap-14 w-full">
+        <div className="flex w-full  md:flex-row flex-col-reverse  justify-between gap-7 md:gap-16 items-center max-w-7xl px-5 mx-auto">
+          {user !== null && (
+            <div
+              className={`${
+                user === null ? "invisible opacity-0 hidden" : "visible"
+              } text-lg md:block hidden font-semibold  shadow-md shadow-red-300/20 text-red-500 bg-white border-2 border-red-500 py-2 rounded-md max-w-[280px] text-center w-full px-5`}
+            >
+              Available balance: ₹ 0
+            </div>
+          )}
           <div className="flex justify-between gap-5 items-center flex-row   md:gap-10 overflow-x-scroll   w-full py-2 ">
-            <div className="w-full mx-auto max-w-xs">
-              <label className="border-2 py-2 rounded-md  border-zinc-400  px-3 flex flex-row-reverse">
+            <div
+              className={`w-full ${user === null ? "" : "mx-auto"} max-w-xs`}
+            >
+              <label className="border  py-2 rounded-md  border-red-400  px-3 flex flex-row-reverse">
                 <svg
                   className="w-6 h-6 hover:fill-zinc-800 fill-zinc-400"
                   viewBox="0 0 32 32"
@@ -179,7 +190,7 @@ export default function TalkToAstrologer() {
                   type="text"
                   onChange={handleSearch}
                   placeholder="Search By Name"
-                  className=" outline-none bg-transparent pr-2  w-full"
+                  className="caret-red-400 outline-none bg-transparent pr-2  w-full"
                 />
               </label>
             </div>
@@ -193,7 +204,7 @@ export default function TalkToAstrologer() {
               </button>
               <button
                 onClick={() => setfilter((prev) => !prev)}
-                className="border-2 border-zinc-400 flex gap-2 items-center hover:border-zinc-800 py-2 px-5 rounded-md text-zinc-800 font-bold"
+                className="border border-red-400 flex gap-2 items-center hover:border-zinc-800 py-2 px-5 rounded-md text-zinc-800 font-bold"
               >
                 <svg
                   className="w-6 h-6 fill-zinc-800"
@@ -249,7 +260,7 @@ const AstrologerCard = (props) => {
             .toLowerCase()}`
         )
       }
-      className="shadow-md relative cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl"
+      className="shadow-md border border-red-200 relative cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl"
     >
       {props.data.isActive && (
         <>
@@ -298,7 +309,8 @@ const AstrologerCard = (props) => {
             ))}
         </p>
         <p>
-          <span className="font-semibold">Exp:</span> {props.data.experience}
+          <span className="font-semibold capitalize">Exp:</span>{" "}
+          {props.data.experience}
           {","}
         </p>
         <p>
@@ -309,9 +321,9 @@ const AstrologerCard = (props) => {
           disabled={!props.data.isActive}
           className={`${
             props.data.isActive
-              ? "hover:bg-green-600 shadow-green-500/40 bg-green-500 cursor-pointer "
-              : "shadow-red-500/40 bg-red-500 opacity-70 cursor-not-allowed"
-          } shadow-md  right-3 bottom-0 absolute text-white  font-bold rounded-lg max-w-max px-7  py-1.5`}
+              ? "hover:bg-green-500  hover:text-white text-green-500  border-green-500 cursor-pointer "
+              : "border-red-500 hover:bg-red-500 text-red-500  opacity-70 cursor-not-allowed"
+          }   right-3 bottom-0 absolute  font-bold rounded-lg border-2 max-w-max px-7  py-1.5`}
         >
           Call
         </button>

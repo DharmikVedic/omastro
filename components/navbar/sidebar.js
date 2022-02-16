@@ -24,7 +24,6 @@ export default function Sidebar(props) {
     return () => removeEventListener("resize", handleResize);
   }, [sidemenu]);
 
-
   const value = astrologerDetail();
   return (
     <>
@@ -62,7 +61,7 @@ export default function Sidebar(props) {
           />
         )}
 
-        <div className="bg-white max-w-[280px] static  pt-8 pb-8 gap-20 hidden lg:flex flex-col items-center h-screen w-[500px]">
+        <div className="bg-white  max-w-[280px] static  pt-8 pb-8 gap-20 hidden lg:flex flex-col items-center h-screen w-[500px]">
           <button
             onClick={() => setsidemenu((prev) => !prev)}
             className="absolute top-3 right-3 p-1 md:hidden block rounded-full bg-red-400"
@@ -195,7 +194,7 @@ export default function Sidebar(props) {
         {props.hide ? (
           ""
         ) : (
-          <div className=" flex-col bg-white border-l w-[570px] hidden lg:flex  gap-5 overflow-y-scroll h-screen justify-start items-start">
+          <div className=" flex-col bg-white  w-[570px] hidden lg:flex  gap-5 overflow-y-scroll h-screen justify-start items-start">
             <div className=" flex justify-between items-start w-full">
               <button
                 onClick={() => {
@@ -219,15 +218,24 @@ export default function Sidebar(props) {
                 </svg>
               </button>
             </div>
-            <div className="w-full flex flex-col gap-3 px-5 max-w-xs">
-              <div className="font-bold group  w-full pb-5 cursor-default mx-auto relative text-xl items-center flex-col flex gap-3 justify-end px-5 py-3 ">
-                <img src="/imgs/user.png" className="w-[80px]" alt="profile" />
-                {value?.name || "Test"}
+            <div className="w-full py-2 rounded-xl flex flex-col gap-3 px-5 max-w-xs">
+              <div className=" group text-zinc-900 w-full pb-5 cursor-default mx-auto relative text-xl items-center flex-col flex gap-3 justify-end px-5 py-3 ">
+                <div className="flex w-full gap-5 items-center">
+                  <img
+                    src="/imgs/user.png"
+                    className="w-[50px]"
+                    alt="profile"
+                  />
+                  <span className="capitalize font-bold">
+                    {value?.name || "Test"}
+                  </span>
+                </div>
+
                 <div className="w-full flex flex-col gap-4 mt-2">
                   <span className="flex overflow-x-auto text-[14px] gap-x-3 gap-y-2  pr-5">
                     {value?.expert.split(",").map((item, i) => (
                       <span
-                        className={`capitalize text-xs ${
+                        className={`capitalize font-semibold text-zinc-800 text-xs ${
                           color[item.split(" ").join("").toLowerCase()]
                         } px-3 py-1 rounded-md`}
                         key={i}
@@ -236,7 +244,7 @@ export default function Sidebar(props) {
                       </span>
                     ))}
                   </span>
-                  <div className="flex items-center text-zinc-700 gap-5 w-full ">
+                  <div className="flex  items-center text-zinc-700 gap-2 w-full ">
                     <span>
                       <svg
                         version="1.0"
@@ -291,11 +299,19 @@ l49 -57 -33 -14 c-50 -21 -124 -36 -221 -46 -94 -9 -116 -21 -137 -71 -16 -38
                         </g>
                       </svg>
                     </span>
-                    <span className="flex capitalize text-[14px] font-normal flex-col ">
-                      {value?.language}
+                    <span className="flex divide-x divide-zinc-400 overflow-x-auto text-[14px] gap-y-2  pr-5">
+                      {value?.language.split(",").map((item, i) => (
+                        <span
+                          className={`capitalize px-2 font-normal  text-zinc-800 text-sm
+                          `}
+                          key={i}
+                        >
+                          {item}
+                        </span>
+                      ))}
                     </span>
                   </div>
-                  <div className="flex items-center text-zinc-700 gap-5 w-full ">
+                  <div className="flex items-center text-zinc-700 gap-5  w-full  ">
                     <span>
                       <svg
                         version="1.0"
@@ -306,7 +322,6 @@ l49 -57 -33 -14 c-50 -21 -124 -36 -221 -46 -94 -9 -116 -21 -137 -71 -16 -38
                       >
                         <g
                           transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
-                          fill="#000000"
                           stroke="none"
                         >
                           <path
@@ -337,8 +352,52 @@ c0 -112 20 -159 80 -190 38 -19 58 -20 670 -20 612 0 632 1 670 20 60 31 80
                       {value?.experience}
                     </span>{" "}
                   </div>
+                  <span className="flex gap-5 font-normal text-base">
+                    <svg
+                      version="1.0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-5 h-5 fill-zinc-800"
+                      viewBox="0 0 512.000000 512.000000"
+                      preserveAspectRatio="xMidYMid meet"
+                    >
+                      <g
+                        transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)"
+                        stroke="none"
+                      >
+                        <path
+                          d="M2370 5113 c-379 -36 -661 -116 -980 -278 -378 -193 -717 -497 -965
+-865 -104 -156 -232 -419 -294 -605 -49 -150 -89 -321 -113 -490 -17 -118 -17
+-512 0 -630 42 -295 120 -553 242 -800 137 -280 272 -468 494 -691 221 -220
+412 -357 681 -489 188 -92 309 -137 500 -185 500 -126 1002 -102 1490 71 149
+53 407 182 540 271 365 243 667 578 866 963 181 348 271 694 286 1090 15 426
+-73 832 -263 1214 -124 250 -263 447 -458 648 -216 224 -428 378 -711 518
+-296 146 -572 225 -900 255 -102 9 -333 11 -415 3z m395 -303 c785 -72 1480
+-553 1825 -1264 106 -217 166 -409 206 -661 25 -154 25 -496 0 -650 -40 -252
+-100 -444 -206 -661 -223 -458 -585 -820 -1045 -1045 -216 -105 -408 -165
+-660 -205 -154 -25 -496 -25 -650 0 -433 70 -808 240 -1135 514 -498 417 -800
+1067 -800 1722 0 655 301 1302 800 1723 464 390 1069 582 1665 527z"
+                        />
+                        <path
+                          d="M1580 3822 c-107 -53 -107 -211 0 -264 31 -16 72 -18 390 -18 387 0
+425 -4 523 -58 67 -36 147 -118 179 -183 l26 -54 -552 -5 c-510 -5 -554 -6
+-579 -23 -95 -62 -87 -209 13 -259 32 -16 81 -18 577 -18 l541 0 -11 -30 c-34
+-90 -149 -200 -255 -242 -55 -22 -70 -23 -442 -28 -350 -5 -389 -7 -413 -23
+-71 -46 -88 -143 -39 -214 46 -68 1253 -1483 1279 -1500 37 -24 102 -27 143
+-6 71 37 102 132 66 201 -8 15 -246 299 -529 632 l-514 605 211 6 c237 7 284
+16 411 79 189 93 331 262 390 463 l16 57 247 0 c215 0 251 2 282 18 107 53
+107 211 0 264 -31 16 -67 18 -281 18 l-246 0 -27 84 c-15 46 -45 112 -66 147
+l-38 64 322 5 c288 4 325 7 349 23 95 62 87 209 -13 259 -33 17 -100 18 -980
+18 -880 0 -947 -1 -980 -18z"
+                        />
+                      </g>
+                    </svg>
+
+                    <span className="flex text-zinc-700 text-sm capitalize font-normal flex-col ">
+                      {value?.price}/5 Min
+                    </span>
+                  </span>
                   <Link href="/astrologer-admin/profile-view">
-                    <a className="text-sm  items-center mx-auto mt-1 flex gap-5 max-w-max text-zinc-600  font-normal py-1 px-4 hover:border-zinc-800 duration-100 ease-in rounded-md border border-zinc-200">
+                    <a className="text-sm font-bold  items-center mr-auto  flex gap-3 w-full justify-center text-zinc-800 max-w-[200px] py-1.5 px-4 hover:border-zinc-800 duration-100 ease-in rounded-md border border-zinc-300">
                       <svg
                         className="w-4 h-4 fill-zinc-800 duration-100 ease-in"
                         version="1.1"

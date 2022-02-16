@@ -8,7 +8,7 @@ select {
   background-position-x: 100%;
   background-position-y: 7px;
 }
-input {
+input:not([type="checkbox"]) {
   background-color: transparent;
   appearance: none;
   outline: none;
