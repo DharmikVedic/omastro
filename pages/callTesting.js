@@ -39,9 +39,9 @@ export default function Home() {
       // Set the channel name.
       channel: channel,
       // Pass your temp token here.
-      token: token,
+      token: null,
       // Set the user ID.
-      uid: uid,
+      uid: null,
     };
 
     // Create an AgoraRTCClient object.
@@ -106,7 +106,7 @@ export default function Home() {
           className="bg-red-400 p-3.5 text-zinc-800 w-40 rounded-md mt-5"
           onClick={() =>
             startBasicCall(
-              "006805fca18065d4589872cee8ad99784b3IAA1hyO8DvzEhaO5mKucyEJHb9Tus5xLSHY5RWjGR4s0WAx+f9gAAAAAIgDzxwcSYJIOYgQAAQBgkg5iAgBgkg5iAwBgkg5iBABgkg5i",
+              "006805fca18065d4589872cee8ad99784b3IAC9p8Aq64Xagg79wQs0BC7sjpkIyFWvALeoWmt2zumtAQx+f9gAAAAAIgAWylBUqVwPYgQAAQCoXA9iAgCoXA9iAwCoXA9iBACoXA9i",
               123,
               "test"
             )
