@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import useUserData from "../context/logincontextvalue";
 import { supabase } from "../supabase/supaclient";
@@ -11,8 +11,7 @@ export default function RegisterForm(props) {
   };
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
-
-  const { signUp } = useUserData();
+  const [validatedata, servalidate] = useState();
 
   if (error) {
     setTimeout(() => seterror(""), 2000);
@@ -23,35 +22,43 @@ export default function RegisterForm(props) {
     setvalue({ ...inputvalue, [name]: value });
   };
 
+  useEffect(() => {
+    if (validatedata === null) {
+      props.passactive(true);
+    }
+  }, [validatedata]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (
+    if (inputvalue.password.length < 6) {
+      seterror("password must be 6 character");
+    } else if (
       inputvalue.email !== "" &&
       inputvalue.password !== "" &&
       inputvalue.password.length >= 6
     ) {
-      const { error } = signUp(
-        {
-          email: inputvalue.email,
-          password: inputvalue.password,
-        },
-        {
-          data: {
-            first_name: inputvalue.name,
-          },
-        }
-      );
-      if (error) {
-        alert("error while sign in");
-        seterror("Email is already register");
-      } else {
-        props.passactive(true);
-      }
-    } else if (inputvalue.password.length < 6) {
-      seterror("password must be 6 character");
+      validate();
     } else {
       seterror("All details must be filled");
     }
+  };
+
+  const validate = async () => {
+    const { data, error } = await supabase.auth.signUp(
+      {
+        email: inputvalue.email,
+        password: inputvalue.password,
+      },
+      {
+        data: {
+          name: inputvalue.name,
+        },
+      }
+    );
+    servalidate(error);
+    error !== null
+      ? seterror("Email is already register")
+      : props.passactive(true);
   };
 
   return (
@@ -116,7 +123,7 @@ export default function RegisterForm(props) {
             />
           </div>
           {error !== "" && (
-            <span className="bg-red-50 py-2 px-4 font-semibold text-red-500 border-l-2 border-red-500">
+            <span className="bg-red-50 py-2 px-4 font-semibold text-red-500 border-l-4 border-red-500">
               {error}
             </span>
           )}

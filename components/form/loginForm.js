@@ -1,12 +1,11 @@
-import { collection, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
 import useUserData from "../context/logincontextvalue";
-import { db } from "../firebase/firebaseinitialization";
+import { supabase } from "../supabase/supaclient";
 
 export default function LoginForm(props) {
   const initialValue = {
-    email: "",
-    password: "",
+    email1: "",
+    password1: "",
   };
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
@@ -22,8 +21,12 @@ export default function LoginForm(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (inputvalue.email !== "" && inputvalue.password !== "") {
-      const { error } = await signIn(inputvalue);
+    if (inputvalue.email1 !== "" && inputvalue.password1 !== "") {
+      const { user, session, error } = await supabase.auth.signIn({
+        email: inputvalue.email1,
+        password: inputvalue.password1,
+      });
+
       if (error) {
         seterror("Invalid login credential");
       } else {
@@ -48,32 +51,32 @@ export default function LoginForm(props) {
         </div>
         <div className="flex flex-col gap-5 ">
           <div className="flex flex-col gap-2">
-            <label htmlFor="email" className=" text-zinc-500">
+            <label htmlFor="email1" className=" text-zinc-500">
               Email Address
             </label>
 
             <input
-              id="email"
-              type="email"
+              id="email1"
+              type="email1"
               onChange={handleInput}
-              value={inputvalue.email}
-              name="email"
+              value={inputvalue.email1}
+              name="email1"
               placeholder="name@address.com"
               className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  p-2.5"
               required
             />
           </div>
           <div className="flex flex-col gap-2">
-            <label htmlFor="password" className="  text-zinc-500">
+            <label htmlFor="password1" className="  text-zinc-500">
               Password
             </label>
 
             <input
-              id="password"
-              type="password"
+              id="password1"
+              type="password1"
               onChange={handleInput}
-              value={inputvalue.password}
-              name="password"
+              value={inputvalue.password1}
+              name="password1"
               placeholder="Enter your password"
               className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  p-2.5"
               required
@@ -91,7 +94,6 @@ export default function LoginForm(props) {
             Sign in
           </button>
         </div>
-
       </form>
     </>
   );

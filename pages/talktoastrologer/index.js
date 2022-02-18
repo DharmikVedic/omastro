@@ -1,15 +1,20 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
+import useUserData from "../../components/context/logincontextvalue";
 import useCurrentAstrologer from "../../components/context/profileContextvalue";
 import Filter from "../../components/filtercomponent/filter";
+import CombineForm from "../../components/form/combineForm";
+
 import { supabase } from "../../components/supabase/supaclient";
 import { BlurBackground } from "../../components/utils/feature";
 const data = require("../../components/jsondata/astrologerdata.json");
+
 export default function TalkToAstrologer() {
   const [filter, setfilter] = useState(false);
   const [rerender, setrerender] = useState(false);
   const [state, setstate] = useState([]);
   const [allastrologer, setastrolger] = useState([]);
+
   const handleSearch = (e) => {
     const { value } = e.target;
     const arr = allastrologer.filter((item) =>
@@ -54,7 +59,6 @@ export default function TalkToAstrologer() {
       .from("astrologerProfile")
       .select("*")
       .order("id", { isActive: true });
-
     return data;
   };
 
@@ -140,6 +144,7 @@ export default function TalkToAstrologer() {
     language: language2,
     gender: gender2,
   });
+  const { user } = useUserData();
 
   const router = useRouter();
   return (
@@ -157,14 +162,22 @@ export default function TalkToAstrologer() {
           />
         </>
       )}
-      <div className="pb-36 bg-zinc-50 pt-28 md:py-36  sm:px-10 flex flex-col gap-14 w-full">
-        <div className="flex w-full md:flex-row flex-col-reverse  justify-between gap-7 md:gap-16 items-center max-w-7xl px-5 mx-auto">
-          <div className="text-lg md:block hidden font-semibold  shadow-md shadow-green-300/20 text-green-500 bg-white border-2 border-green-500 py-2 rounded-md max-w-[280px] text-center w-full px-5">
-            Available balance: ₹ 0
-          </div>
+      <div className="pb-36 bg-white pt-28 md:py-36  sm:px-10 flex flex-col gap-14 w-full">
+        <div className="flex w-full  md:flex-row flex-col-reverse  justify-between gap-7 md:gap-16 items-center max-w-7xl px-5 mx-auto">
+          {user !== null && (
+            <div
+              className={`${
+                user === null ? "invisible opacity-0 hidden" : "visible"
+              } text-lg md:block hidden font-semibold  shadow-md shadow-red-300/20 text-red-500 bg-white border-2 border-red-500 py-2 rounded-md max-w-[280px] text-center w-full px-5`}
+            >
+              Available balance: ₹ 0
+            </div>
+          )}
           <div className="flex justify-between gap-5 items-center flex-row   md:gap-10 overflow-x-scroll   w-full py-2 ">
-            <div className="w-full mx-auto max-w-xs">
-              <label className="border-2 py-2 rounded-md  border-zinc-400  px-3 flex flex-row-reverse">
+            <div
+              className={`w-full ${user === null ? "" : "mx-auto"} max-w-xs`}
+            >
+              <label className="border  py-2 rounded-md  border-red-400  px-3 flex flex-row-reverse">
                 <svg
                   className="w-6 h-6 hover:fill-zinc-800 fill-zinc-400"
                   viewBox="0 0 32 32"
@@ -179,7 +192,7 @@ export default function TalkToAstrologer() {
                   type="text"
                   onChange={handleSearch}
                   placeholder="Search By Name"
-                  className=" outline-none bg-transparent pr-2  w-full"
+                  className="caret-red-400 outline-none bg-transparent pr-2  w-full"
                 />
               </label>
             </div>
@@ -193,7 +206,7 @@ export default function TalkToAstrologer() {
               </button>
               <button
                 onClick={() => setfilter((prev) => !prev)}
-                className="border-2 border-zinc-400 flex gap-2 items-center hover:border-zinc-800 py-2 px-5 rounded-md text-zinc-800 font-bold"
+                className="border border-red-400 flex gap-2 items-center hover:border-zinc-800 py-2 px-5 rounded-md text-zinc-800 font-bold"
               >
                 <svg
                   className="w-6 h-6 fill-zinc-800"
@@ -239,84 +252,125 @@ export default function TalkToAstrologer() {
 const AstrologerCard = (props) => {
   const router = useRouter();
   const { storeCurrentAstrologer } = useCurrentAstrologer();
+  const [login, setlogin] = useState(false);
+  const { user } = useUserData();
+  const handleclose2 = () => {
+    setlogin(false);
+  };
+
+  const handleFormSuccess = (e) => {
+    if (e && user !== null) {
+      router.push("/talktoastrologer/call-intake/call-intake-form");
+      setlogin(false);
+      storeCurrentAstrologer(props.data.id, user.email);
+    }
+  };
+
+  const handleCallButton = () => {
+    if (user === null) {
+      setlogin(true);
+    } else {
+      router.push("/talktoastrologer/call-intake/call-intake-form");
+      storeCurrentAstrologer(props.data.id, user.email);
+    }
+  };
+
   return (
-    <div
-      onClick={() =>
-        router.push(
-          `/talktoastrologer/${props.data.name
-            .split(" ")
-            .join("")
-            .toLowerCase()}`
-        )
-      }
-      className="shadow-md relative cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl"
-    >
-      {props.data.isActive && (
-        <>
-          <span className="animate-ping absolute  bg-green-500 right-0  w-4 h-4 rounded-full top-0"></span>
-          <span className="absolute inline-flex right-0 top-0 rounded-full h-3.5 w-3.5 bg-green-500"></span>
-        </>
-      )}
-      <div className="flex border-b pb-3 border-zinc-200 items-center gap-5 ">
-        <div className="w-14 h-14">
-          <img
-            src="/imgs/avatar-2.jpeg"
-            className="w-full h-full rounded-full"
-            alt="demo"
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <h5 className="capitalize md:text-2xl text-xl">{props.data.name}</h5>
-          <span className="text-xs text-yellow-400"> ★★★★★</span>
-        </div>
-      </div>
-      <div className="flex flex-col gap-2 relative">
-        <p className="flex gap-3 py-1 overflow-x-scroll">
-          {props.data.expert
-            .toString()
-            .split(",")
-            .map((item, i) => (
-              <span
-                key={i}
-                className={`py-1 capitalize ${
-                  color[item.split(" ").join("").toLowerCase()]
-                } px-3 rounded-md text-sm shadow-sm shadow-zinc-300/80 text-zinc-800 font-semibold`}
-              >
-                {item}
-              </span>
-            ))}
-        </p>
-        <p className="flex gap-1">
-          <span className="font-semibold">Lang:</span>
-          {props.data.language
-            .toString()
-            .split(",")
-            .map((item, i) => (
-              <span className="capitalize" key={i}>
-                {item},
-              </span>
-            ))}
-        </p>
-        <p>
-          <span className="font-semibold">Exp:</span> {props.data.experience}
-          {","}
-        </p>
-        <p>
-          <span className="font-semibold">₹</span> {props.data.price}/min
-        </p>
-        <button
-          onClick={() => storeCurrentAstrologer(props.data.astrologerId, "")}
-          disabled={!props.data.isActive}
-          className={`${
-            props.data.isActive
-              ? "hover:bg-green-600 shadow-green-500/40 bg-green-500 cursor-pointer "
-              : "shadow-red-500/40 bg-red-500 opacity-70 cursor-not-allowed"
-          } shadow-md  right-3 bottom-0 absolute text-white  font-bold rounded-lg max-w-max px-7  py-1.5`}
+    <>
+      {login && <BlurBackground z="z-30" />}
+      <CombineForm
+        passactive={handleclose2}
+        passsuccess={handleFormSuccess}
+        transition={
+          login
+            ? "-translate-y-1/2 opacity-100 visible"
+            : "translate-y-0 opacity-0 invisible"
+        }
+      />
+      <div className="shadow-md shadow-red-300/40 duration-150 ease-linear hover:-translate-y-1.5 border border-red-200 relative cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl">
+        {props.data.isActive && (
+          <>
+            <span className="animate-ping absolute  bg-green-500 right-4  w-4 h-4 rounded-full top-4"></span>
+            <span className="absolute inline-flex right-4 top-4 rounded-full h-3.5 w-3.5 bg-green-500"></span>
+          </>
+        )}
+        <div
+          onClick={() =>
+            router.push(
+              `/talktoastrologer/${props.data.name
+                .split(" ")
+                .join("")
+                .toLowerCase()}`
+            )
+          }
+          className="flex border-b pb-3 border-zinc-200 items-center gap-5 "
         >
-          Call
-        </button>
+          <div className="w-14 h-14">
+            <img
+              src="/imgs/avatar-2.jpeg"
+              className="w-full h-full rounded-full"
+              alt="demo"
+            />
+          </div>
+          <div className="flex flex-col gap-1">
+            <h5 className="capitalize md:text-2xl text-xl">
+              {props.data.name}
+            </h5>
+            <span className="text-xs text-yellow-400"> ★★★★★</span>
+          </div>
+        </div>
+        <div className="flex flex-col gap-2 relative">
+          <p className="flex gap-3 py-1 overflow-x-scroll">
+            {props.data.expert
+              .toString()
+              .split(",")
+              .map((item, i) => (
+                <span
+                  key={i}
+                  className={`py-1 capitalize ${
+                    color[item.split(" ").join("").toLowerCase()] === undefined
+                      ? "bg-indigo-50"
+                      : color[item.split(" ").join("").toLowerCase()]
+                  } px-3 rounded-md text-sm shadow-sm shadow-zinc-300/80 text-zinc-800 font-semibold`}
+                >
+                  {item}
+                </span>
+              ))}
+          </p>
+          <p className="flex gap-1">
+            <span className="font-semibold">Lang:</span>
+            {props.data.language
+              .toString()
+              .split(",")
+              .map((item, i) => (
+                <span className="capitalize" key={i}>
+                  {item},
+                </span>
+              ))}
+          </p>
+          <p>
+            <span className="font-semibold capitalize">Exp:</span>{" "}
+            {props.data.experience}
+            {","}
+          </p>
+          <p>
+            <span className="font-semibold">₹</span> {props.data.price}/min
+          </p>
+
+          <button
+            onClick={handleCallButton}
+            disabled={!props.data.isActive}
+            className={`${
+              props.data.isActive
+                ? "hover:bg-green-500  hover:text-white text-green-500  border-green-500 cursor-pointer "
+                : "border-red-500 text-red-500  opacity-70 cursor-not-allowed"
+            }   right-3 bottom-0 absolute  font-bold rounded-lg border-2 max-w-max px-7  py-1.5`}
+          >
+            Call
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

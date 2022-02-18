@@ -1,32 +1,16 @@
 import React from "react";
-import Sidebar from "../../components/navbar/sidebar";
+import Sidebar from "../../components/navbar/commonAstrologerPage";
 
 export default function CallHistory() {
-  const userData = {
-    isActive: true,
-    place: "Susner, Madhya Pradesh",
-    month: 2,
-    min: 7,
-    martial_status: "divorced",
-    astrologerId: "abc@gopal",
-    year: 2000,
-    name: "dharmik rathod",
-    topic_of_concern: "Education",
-    country: "India",
-    occupation: "bussiness/self employed",
-    day: 3,
-    gender: "male",
-    hour: 5,
-  };
   return (
-    <div>
+    <>
       <Sidebar active="call-history">
-        <div className="w-full h-screen  overflow-y-scroll bg-gray-50 px-5 md:px-10 py-20 md:py-12">
-          <div className="flex flex-col gap-10 ">
+        <div className="w-full h-screen  overflow-y-scroll bg-gray-50 px-5 md:px-10 py-20  md:py-12">
+          <div className="flex flex-col gap-10 mt-8 md:mt-0">
             <h3>Call History</h3>
-            <div className="bg-white shadow-md max-w-lg p-5 md:px-10 py-4 flex flex-col  divide-y rounded-md">
-              <div className="flex relative py-6 flex-col gap-2 ">
-                <span className="absolute top-3 right-2">
+            <div className="max-w-xl gap-6 p-5 md:px-10 py-4 flex flex-col">
+              <div className="flex border-2 border-green-400 p-5 rounded-lg bg-white relative py-6 flex-col gap-2 ">
+                <span className="absolute top-4 right-4">
                   <img
                     src="/imgs/sucess2.png"
                     className="w-5 h-5"
@@ -57,8 +41,8 @@ export default function CallHistory() {
                   </p>
                 </div>
               </div>
-              <div className="flex relative py-6 flex-col gap-2 ">
-                <span className="absolute top-3 right-2">
+              <div className="flex border-2 border-red-300 p-5 rounded-lg bg-white relative py-6 flex-col gap-2 ">
+                <span className="absolute top-4 right-4">
                   <img
                     src="/imgs/cancel.png"
                     className="w-5 h-5"
@@ -89,8 +73,8 @@ export default function CallHistory() {
                   </p>
                 </div>
               </div>
-              <div className="flex relative py-6 flex-col gap-2 ">
-                <span className="absolute top-3 right-2">
+              <div className="flex border border-green-400 p-5 rounded-lg bg-white relative py-6 flex-col gap-2 ">
+                <span className="absolute top-4 right-4">
                   <img
                     src="/imgs/sucess2.png"
                     className="w-5 h-5"
@@ -125,6 +109,6 @@ export default function CallHistory() {
           </div>
         </div>
       </Sidebar>
-    </div>
+    </>
   );
 }

@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import useCurrentAstrologer from "../../components/context/profileContextvalue";
-import Sidebar from "../../components/navbar/sidebar";
+import Sidebar from "../../components/navbar/commonAstrologerPage";
 import { supabase } from "../../components/supabase/supaclient";
 const md5 = require("md5");
 export default function AstrologerIndex(props) {
@@ -38,28 +37,29 @@ export default function AstrologerIndex(props) {
     setupdate(data[0]);
     setactive(data[0]?.isActive);
   };
-  console.log(update);
   return (
     <div className="w-full  bg-gray-50 overflow-y-scroll h-screen flex">
       <Sidebar active="home">
-        <div className="w-full overflow-y-scroll h-screen pb-24 md:mt-6 mt-10">
+        <div className="w-full overflow-y-scroll h-screen pb-24 md:mt-6 mt-20">
           <div className="px-5 lg:px-10 w-full py-10">
             <h2>Astrolger Panel</h2>
-            <div className="bg-red-100 gap-10  w-full flex justify-between mt-10 relative p-7 rounded-xl text-3xl font-bold">
-              <span className="flex md:text-3xl text-2xl gap-2 flex-col">
-                Welcome {update?.name}
-                <p className=" max-w-md text-sm md:text-base font-normal leading-6">
+            <div className="bg-white border-2 border-red-300 shadow-lg shadow-red-300/30 gap-10  w-full flex justify-between mt-10 relative p-7 rounded-xl text-3xl font-bold">
+              <span className="flex  md:text-3xl text-2xl gap-2 flex-col">
+                <span className="capitalize">Welcome {update?.name}</span>
+                <p className=" max-w-md  text-sm md:text-base font-normal leading-6">
                   Start your astrology prediction by activating your Status
                 </p>
                 <button
                   onClick={handleActive}
                   className={`${
                     active
-                      ? "bg-zinc-800 text-white border-transparent"
-                      : "bg-white"
-                  } text-sm mt-4 md:text-base cursor-pointer font-semibold  relative py-2 md:py-3 max-w-max  px-8 rounded-md shadow-md border-zinc-800 border-2    text-zinc-800`}
+                      ? "bg-red-400 text-white border-transparent"
+                      : "bg-white border-red-500"
+                  } text-sm mt-4 md:text-base cursor-pointer font-semibold  relative py-2 md:py-3 max-w-max  px-8 rounded-md shadow-md  border-2    text-zinc-800`}
                 >
-                  Change Your Active Status
+                  {active
+                    ? "Your Status Is Active"
+                    : " Change Your Active Status"}
                 </button>
               </span>
               <div className="md:block hidden">

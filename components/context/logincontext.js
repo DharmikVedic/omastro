@@ -24,12 +24,14 @@ export default function Logincontext(props) {
   }, []);
 
   const value = {
-    signUp: (data) => supabase.auth.signUp(data),
-    signIn: (data) => supabase.auth.signIn(data),
+    signUp: (data, error) => {
+      console.log(data);
+      supabase.auth.signUp(data, error);
+    },
+    signIn: (data) => supabase.auth.signIn(data, error),
     signOut: () => supabase.auth.signOut(),
     user,
-  }
-
+  };
 
   return <Loginc.Provider value={value}>{props.children}</Loginc.Provider>;
 }

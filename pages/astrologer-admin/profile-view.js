@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/navbar/sidebar";
+import Sidebar from "../../components/navbar/commonAstrologerPage";
 import { supabase } from "../../components/supabase/supaclient";
 import { astrologerDetail } from "../../components/utils/localuserdata";
 import { ToastContainer, toast } from "react-toastify";
@@ -17,6 +17,7 @@ export default function ProfileVeiw() {
     experience: "",
     desc: "",
     gender: "male",
+    price: "",
   };
   const value = astrologerDetail();
 
@@ -59,6 +60,7 @@ export default function ProfileVeiw() {
           experience: formValue.experience,
           desc: formValue.desc,
           gender: formValue.gender,
+          price: formValue.price,
         })
         .match({ astrologerId: formValue.astrologerId });
       seterror(null);
@@ -86,6 +88,9 @@ export default function ProfileVeiw() {
     if (!values.gender) {
       error.gender = "*required";
     }
+    if (!values.price) {
+      error.price = "*required";
+    }
     if (!values.language) {
       error.language = "*required";
     }
@@ -112,39 +117,56 @@ export default function ProfileVeiw() {
       <ToastContainer />
       <Sidebar hide={true} active="profile">
         <div className="pt-24 md:pt-20 pb-32 overflow-y-scroll w-full bg-gray-50 h-screen ">
-          <div className="w-full    flex-col gap-12 items-center   flex justify-center px-5 md:px-10">
-            <div className="flex  items-center  gap-6 font-bold text-2xl">
+          <div className="w-full bg-white max-w-xl mx-auto py-10 rounded-md shadow-xl  flex-col gap-8 items-center   flex justify-center px-5 md:px-10">
+            <div className="flex flex-col items-center  gap-6 font-bold text-2xl">
               <img src="/imgs/user.png" className="w-[80px] " alt="profile" />
-              {value?.name || "Test"}{" "}
+              <span className="capitalize">{value?.name || "Test"} </span>
             </div>
             <form
               onSubmit={submitingform}
-              className="max-w-xl  rounded w-full flex  flex-col gap-7 md:gap-10 "
+              className="max-w-xl  rounded w-full flex  flex-col gap-7 md:gap-9 "
             >
-              <div className="flex md:gap-10 gap-5">
+              <div className="w-full flex relative  flex-col pt-2 gap-3 ">
+                <label htmlFor="name">Name:</label>
+                <input
+                  type="text"
+                  value={formValue.name}
+                  placeholder="E.g: kevin hires"
+                  onChange={handleInput}
+                  id="name"
+                  name="name"
+                  className={`w-full py-2 px-2 !bg-white  text-zinc-800  border  rounded ${
+                    formError.name && formValue.name === ""
+                      ? "border-red-500"
+                      : "border-zinc-400"
+                  }  focus:border-green-500 focus:ring-4 focus:ring-green-100  caret-green-500   `}
+                />
+              </div>
+
+              <div className="flex gap-5 md:gap-10">
                 <div className="w-full flex relative  flex-col pt-2 gap-3 ">
-                  <label>Name:</label>
+                  <label htmlFor="price">Calling Price Per 5 Mins:</label>
                   <input
-                    type="text"
-                    value={formValue.name}
-                    placeholder="E.g: kevin hires"
+                    type="number"
+                    value={formValue.price}
+                    placeholder="E.g: ₹ 125"
                     onChange={handleInput}
-                    id="name"
-                    name="name"
-                    className={`w-full py-2 px-2 bg-white  text-zinc-800  border  rounded ${
-                      formError.name && formValue.name === ""
+                    id="price"
+                    name="price"
+                    className={`w-full py-2 px-2 !bg-white  text-zinc-800  border  rounded ${
+                      formError.price && formValue.price === ""
                         ? "border-red-500"
                         : "border-zinc-400"
                     }  focus:border-green-500 focus:ring-4 focus:ring-green-100  caret-green-500   `}
                   />
                 </div>
-                <div className="w-full flex flex-col pt-2 gap-3 md:max-w-[150px]">
-                  <label> Gender:</label>
+                <div className="w-full flex flex-col pt-2 gap-3">
+                  <label htmlFor="gender"> Gender:</label>
                   <select
                     name="gender"
                     id="gender"
                     value={formValue.gender}
-                    className={`text-zinc-800 bg-white py-2 px-2 border rounded w-full focus:border-green-500 caret-green-500 focus:outline-none ${
+                    className={`text-zinc-800 !bg-white py-2 px-2 border rounded w-full focus:border-green-500 caret-green-500 focus:outline-none ${
                       formError.gender && formValue.gender === ""
                         ? "border-red-500"
                         : "border-zinc-400"
@@ -168,7 +190,7 @@ export default function ProfileVeiw() {
                     id="age"
                     value={formValue.age}
                     onChange={handleNumber}
-                    className={`text-zinc-800 px-2 bg-white border rounded py-2  w-full caret-green-500 focus:border-green-500 focus:outline-none ${
+                    className={`text-zinc-800 px-2 !bg-white border rounded py-2  w-full caret-green-500 focus:border-green-500 focus:outline-none ${
                       formError.age && formValue.age === ""
                         ? "border-red-500"
                         : "border-zinc-400"
@@ -186,7 +208,7 @@ export default function ProfileVeiw() {
                     value={formValue.experience}
                     onChange={handleInput}
                     placeholder="E.g: 3 years"
-                    className={`text-zinc-800  py-2 px-2 border bg-white rounded w-full caret-green-500 focus:border-green-500 focus:outline-none ${
+                    className={`text-zinc-800  py-2 px-2 border !bg-white rounded w-full caret-green-500 focus:border-green-500 focus:outline-none ${
                       formError.experience && formValue.experience === ""
                         ? "border-red-500"
                         : "border-zinc-400"
@@ -207,7 +229,7 @@ export default function ProfileVeiw() {
                     value={formValue.language}
                     onChange={handleInput}
                     placeholder="E.g: Hindi, English"
-                    className={`text-zinc-800  py-2 px-2 bg-white  border rounded w-full caret-green-500 focus:border-green-500 focus:outline-none ${
+                    className={`text-zinc-800  py-2 px-2 !bg-white  border rounded w-full caret-green-500 focus:border-green-500 focus:outline-none ${
                       formError.language && formValue.language === ""
                         ? "border-red-500"
                         : "border-zinc-400"
@@ -226,7 +248,7 @@ export default function ProfileVeiw() {
                     value={formValue.expert}
                     onChange={handleInput}
                     placeholder="E.g: Tarot, Vedic"
-                    className={`text-zinc-800  py-2 px-2 border bg-white  rounded w-full caret-green-500 focus:border-green-500 focus:outline-none ${
+                    className={`text-zinc-800  py-2 px-2 border !bg-white  rounded w-full caret-green-500 focus:border-green-500 focus:outline-none ${
                       formError.expert && formValue.expert === ""
                         ? "border-red-500"
                         : "border-zinc-400"
@@ -241,11 +263,11 @@ export default function ProfileVeiw() {
                   id="desc"
                   value={formValue.desc}
                   onChange={handleInput}
-                  className={`text-zinc-800 text-xs rounded h-[130px] px-2 py-3 border bg-white  w-full caret-green-500 focus:border-green-500 focus:outline-none ${
+                  className={`text-zinc-800 md:text-base text-xs rounded h-[130px] px-2 py-3 border !bg-white  w-full caret-green-500 focus:border-green-500 focus:outline-none ${
                     formError.desc && formValue.desc === ""
                       ? "border-red-500"
                       : "border-zinc-400"
-                  } focus:ring-4 focus:ring-green-100`}
+                  } focus:ring-4  focus:ring-green-100`}
                 ></textarea>
               </div>
               {error !== null ? (
