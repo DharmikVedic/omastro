@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 export default function Filter(props) {
   const [active, setactive] = useState("skill");
 
-  const gender = ["male", "female"];
+  // const gender = ["male", "female"];
 
   //   const language = [
   //     "Arabic",
@@ -110,7 +110,7 @@ export default function Filter(props) {
   });
 
   return (
-    <div div className=" px-5">
+    <div className=" px-5">
       <div
         ref={ref}
         className="bg-white z-20 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-md w-full shadow-xl rounded-md"

@@ -2,9 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { color } from "../../pages/talktoastrologer";
-// import { BlurBackground } from "../utils/feature";
-// import Mobilesidemenu from "./mobilesidemenu";
-// import { astrologerDetail } from "../utils/localuserdata";
+
 import CallingUi from "../callingui.js/callingui";
 import { supabase } from "../supabase/supaclient";
 import AstrologerSidebar from "../astrologer-admin/sidebar";
@@ -31,27 +29,26 @@ export default function Sidebar(props) {
     if (renderer?.currentQueue) {
       setcalldisplay(true);
     }
-  }, [setcalldisplay]);
+  }, [renderer.currentQueue]);
 
   useEffect(async () => {
     const mySubscription = supabase
       .from("astrologerProfile")
       .on("*", (payload) => {
-        console.log("Change received!", payload);
+        // router.reload();
+        // console.log("Change received!", payload);
         setrender((prev) => !prev);
         if (payload.new) {
           setrerender(payload.new);
         }
       })
       .subscribe();
-    console.log(mySubscription);
+    // console.log(mySubscription);
   }, [renderer, render]);
 
   const handleclose = (e) => {
     setcalldisplay(false);
   };
-
-  // console.log(renderer);
 
   return (
     <>

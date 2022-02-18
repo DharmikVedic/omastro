@@ -73,7 +73,7 @@ export default function UserProfileForm() {
     const r = await supabase
       .from("astrologerProfile")
       .update({
-        currentQueue:true,
+        currentQueue: true,
         callingHistory: { history: data[0].callingHistory.history },
       })
       .eq("astrologerId", astroid);
@@ -166,7 +166,7 @@ export default function UserProfileForm() {
               onChange={handleInput}
               id="name"
               name="name"
-              className={`w-full py-2.5 px-2 bg-transparent text-zinc-800  border rounded ${
+              className={`w-full py-2.5 !bg-white px-2 text-zinc-800  border rounded ${
                 formError.name && formValue.name === ""
                   ? "border-red-500"
                   : "border-zinc-400 focus:ring-green-100 focus:ring-4"
@@ -181,7 +181,7 @@ export default function UserProfileForm() {
               className={`text-zinc-800  py-2.5 px-2 border rounded w-full focus:border-green-500 focus:outline-none ${
                 formError.gender && formValue.gender === ""
                   ? "border-red-500"
-                  : "border-zinc-400 focus:ring-green-100 focus:ring-4"
+                  : "border-zinc-400 focus:ring-green-100 bg-white   focus:ring-4"
               }`}
               onChange={handleInput}
             >
@@ -206,11 +206,11 @@ export default function UserProfileForm() {
                 onChange={handleNumber}
                 id="day"
                 name="day"
-                className={`w-full st bg-transparent py-2.5 px-2 text-zinc-800  border rounded ${
+                className={`w-full  py-2.5 !bg-white px-2 text-zinc-800  border rounded ${
                   formError.day && formValue.day === ""
                     ? "border-red-500"
                     : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-                }  focus:border-green-500    `}
+                }  focus:border-green-500     `}
               />
             </div>
             <div className="flex col-span-2 items-center w-full gap-5">
@@ -221,7 +221,7 @@ export default function UserProfileForm() {
                   formError.month && formValue.month === ""
                     ? "border-red-500"
                     : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-                }`}
+                } bg-white  `}
                 onChange={handleNumber}
               >
                 <option value>Month*</option>
@@ -249,11 +249,11 @@ export default function UserProfileForm() {
                 onChange={handleNumber}
                 id="year"
                 name="year"
-                className={`w-full  bg-transparent py-2.5 px-2 text-zinc-800  border rounded ${
+                className={`w-full !bg-white py-2.5 px-2 text-zinc-800  border rounded ${
                   formError.year && formValue.year === ""
                     ? "border-red-500"
                     : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-                }  focus:border-green-500    `}
+                }  focus:border-green-500      `}
               />
             </div>
           </div>
@@ -269,7 +269,7 @@ export default function UserProfileForm() {
                   formError.hour && formValue.hour === ""
                     ? "border-red-500"
                     : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-                }`}
+                } bg-white  `}
                 onChange={handleNumber}
               >
                 <option value>Hour*</option>
@@ -307,7 +307,7 @@ export default function UserProfileForm() {
                   formError.min && formValue.min === ""
                     ? "border-red-500"
                     : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-                }`}
+                } bg-white  `}
                 onChange={handleNumber}
               >
                 <option value>Minute*</option>
@@ -386,7 +386,7 @@ export default function UserProfileForm() {
               formError.martial_status && formValue.martial_status === ""
                 ? "border-red-500"
                 : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-            }`}
+            } bg-white  `}
             onChange={handleInput}
           >
             <option value>Select Martial Status*</option>
@@ -405,7 +405,7 @@ export default function UserProfileForm() {
               formError.occupation && formValue.occupation === ""
                 ? "border-red-500"
                 : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-            }`}
+            } bg-white  `}
             onChange={handleInput}
           >
             <option value>Occupation*</option>
@@ -428,7 +428,7 @@ export default function UserProfileForm() {
               formError.topic_of_concern && formValue.topic_of_concern === ""
                 ? "border-red-500"
                 : "border-zinc-400 focus:ring-green-100 focus:ring-4"
-            }`}
+            } bg-white  `}
             onChange={handleInput}
           >
             <option value>Topic of concern*</option>
