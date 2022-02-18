@@ -43,8 +43,7 @@ export default function Home() {
   const fetchAstrologer = async () => {
     const { data, error } = await supabase
       .from("astrologerProfile")
-      .select("*")
-      .eq("isActive", true);
+      .select("*");
     return data;
   };
 
