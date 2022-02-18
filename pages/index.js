@@ -54,28 +54,19 @@ export default function Home() {
   }, []);
 
   useEffect(async () => {
-    const d = await fetchAstrologer();
     const mySubscription = supabase
       .from("astrologerProfile")
-      .on("*", (payload) => {
-        // console.log("Change received!", payload);
+      .on("UPDATE", (payload) => {
+        // router.reload();
+        alert("Change received!", payload);
+        setrerender((prev) => !prev);
         if (payload.new) {
-          const index = d.findIndex(
-            (el) => el.astrologerId === payload.new.astrologerId
-          );
-          if (index === -1) {
-            d.push(payload.new);
-          } else {
-            d[index] = payload.new;
-          }
-          setastrolger(d);
-          setstate1(d);
-          setrerender((prev) => !prev);
-          // console.log(index);
+          router.reload();
+          setrerender(payload.new);
         }
-        // setastrolger()
       })
       .subscribe();
+    return () => supabase.removeSubscription(mySubscription);
   }, [rerender]);
 
   return (

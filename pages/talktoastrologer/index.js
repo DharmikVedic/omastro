@@ -52,6 +52,7 @@ export default function TalkToAstrologer() {
         // setastrolger()
       })
       .subscribe();
+    return () => supabase.removeSubscription(mySubscription);
   }, [rerender]);
 
   const fetchAstrologer = async () => {
