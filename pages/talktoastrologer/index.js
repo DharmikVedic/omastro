@@ -287,7 +287,7 @@ const AstrologerCard = (props) => {
             : "translate-y-0 opacity-0 invisible"
         }
       />
-      <div className="shadow-md shadow-red-300/40 duration-150 ease-linear hover:-translate-y-1.5 border border-red-200 relative cursor-pointer flex bg-white flex-col gap-4 p-5 rounded-xl">
+      <div className="shadow-md shadow-red-300/40 duration-150 ease-linear hover:-translate-y-1.5 border border-red-200 relative  flex bg-white flex-col gap-4 p-5 rounded-xl">
         {props.data.isActive && (
           <>
             <span className="animate-ping absolute  bg-green-500 right-4  w-4 h-4 rounded-full top-4"></span>
@@ -297,13 +297,10 @@ const AstrologerCard = (props) => {
         <div
           onClick={() =>
             router.push(
-              `/talktoastrologer/${props.data.name
-                .split(" ")
-                .join("")
-                .toLowerCase()}`
+              `/talktoastrologer/${props.data.name.split(" ").join("-")}`
             )
           }
-          className="flex border-b pb-3 border-zinc-200 items-center gap-5 "
+          className="flex border-b pb-3 border-zinc-200 cursor-pointer items-center gap-5 "
         >
           <div className="w-14 h-14">
             <img

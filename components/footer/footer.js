@@ -20,10 +20,12 @@ export default function Footer() {
             <img src="/imgs/logo.jpg" alt="logo" className="w-full" />
           </div>
           <p className=" text-zinc-300">
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book{" "}
+            Shri. Shankar G. Hegde is an internationally renowned astrologer
+            with an experience of predicting on more than 45 thousand horoscopes
+            as he learnt astrology, mantra vidya & palmistry at a very young age
+            of just 14 years. Though he was a science student & good sport
+            person, martial artist during his college days , he was more
+            interested in occultism.
           </p>
         </div>
         <div className=" w-full flex sm:justify-center md:justify-center">
@@ -53,24 +55,56 @@ export default function Footer() {
             </div>
           </div>
         </div> */}
-        <div className=" w-full flex sm:justify-start  text-zinc-100 text-lg font-semibold">
-          <div className="flex flex-col gap-5">
-            Download App
-            <div className="flex gap-5 flex-col max-w-[170px] w-full">
-              <a href="/" rel="noreferrer" target="_blank">
-                <img
-                  src="/imgs/footer-app-store.png"
-                  alt="app_store"
-                  className="w-full"
-                />
-              </a>
-              <a href="/" rel="noreferrer" target="_blank">
-                <img
-                  src="/imgs/footer-play-store.png"
-                  alt="play_store"
-                  className="w-full"
-                />
-              </a>
+        <div className=" w-full flex sm:justify-start  text-zinc-100  font-semibold">
+          <div className="flex flex-col w-full gap-5">
+            <span className="text-xl">Contact</span>
+            <div className="flex gap-5  text-white flex-col  w-full">
+              <p className="flex gap-3 text-zinc-400 text-sm items-start">
+                <svg
+                  className="w-[30px] md:w-[50px] fill-zinc-100"
+                  data-name="Livello 1"
+                  id="Livello_1"
+                  viewBox="0 0 128 128"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title />
+                  <path d="M64,128a6.9,6.9,0,0,1-4.89-2L26.23,93.12A55.05,55.05,0,0,1,10,53.69,53.29,53.29,0,0,1,25.87,15.58a54.56,54.56,0,0,1,76.26,0h0A53.29,53.29,0,0,1,118,53.69a55.05,55.05,0,0,1-16.23,39.43L68.89,125.94A6.9,6.9,0,0,1,64,128ZM64,6A48.19,48.19,0,0,0,30.08,19.85,47.34,47.34,0,0,0,16,53.7,49.1,49.1,0,0,0,30.47,88.87l32.87,32.82a.91.91,0,0,0,1.31,0L97.53,88.87A49.1,49.1,0,0,0,112,53.7,47.34,47.34,0,0,0,97.92,19.85h0A48.19,48.19,0,0,0,64,6Z" />
+                  <path d="M64,81.41a27.25,27.25,0,1,1,19.3-8A27.23,27.23,0,0,1,64,81.41Zm0-48.49a21.26,21.26,0,1,0,15.06,6.22h0A21.25,21.25,0,0,0,64,32.92Z" />
+                </svg>
+                No.1323, 7th Main, West Of Chord Road, 2nd stage,
+                Mahalakshmipuram, Near Indian Overseas Bank, Bangalore 86
+              </p>
+              <p className="flex gap-3 text-zinc-400 text-sm items-start">
+                <svg
+                  className="w-[22px] fill-zinc-100"
+                  viewBox="0 0 512 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title />
+                  <g data-name="1" id="_1">
+                    <path d="M348.73,450.06a198.63,198.63,0,0,1-46.4-5.85c-52.43-12.65-106.42-44.74-152-90.36s-77.71-99.62-90.36-152C46.65,146.75,56.15,99.61,86.69,69.07l8.72-8.72a42.2,42.2,0,0,1,59.62,0l50.11,50.1a42.18,42.18,0,0,1,0,59.62l-29.6,29.59c14.19,24.9,33.49,49.82,56.3,72.63s47.75,42.12,72.64,56.31L334.07,299a42.15,42.15,0,0,1,59.62,0l50.1,50.1a42.16,42.16,0,0,1,0,59.61l-8.73,8.72C413.53,439,383.73,450.06,348.73,450.06ZM125.22,78a12,12,0,0,0-8.59,3.56l-8.73,8.72c-22.87,22.87-29.55,60-18.81,104.49,11.37,47.13,40.64,96.1,82.41,137.86s90.73,71,137.87,82.41c44.5,10.74,81.61,4.06,104.48-18.81l8.72-8.72a12.16,12.16,0,0,0,0-17.19l-50.09-50.1a12.16,12.16,0,0,0-17.19,0l-37.51,37.51a15,15,0,0,1-17.5,2.72c-30.75-15.9-61.75-39.05-89.65-66.95s-51-58.88-66.94-89.63a15,15,0,0,1,2.71-17.5l37.52-37.51a12.16,12.16,0,0,0,0-17.19l-50.1-50.11A12.07,12.07,0,0,0,125.22,78Z" />
+                    <path d="M364.75,269.73a15,15,0,0,1-15-15,99.37,99.37,0,0,0-99.25-99.26,15,15,0,0,1,0-30c71.27,0,129.25,58,129.25,129.26A15,15,0,0,1,364.75,269.73Z" />
+                    <path d="M428.15,269.73a15,15,0,0,1-15-15c0-89.69-73-162.66-162.65-162.66a15,15,0,0,1,0-30c106.23,0,192.65,86.43,192.65,192.66A15,15,0,0,1,428.15,269.73Z" />
+                  </g>
+                </svg>
+                080-23520866 +91 93531 34279
+              </p>
+              <a
+                className="flex gap-3 text-zinc-400 hover:text-white text-sm items-start"
+                href="mailto:shankargh@rediffmail.com"
+              >
+                <svg
+                  className="w-[20px] fill-zinc-100"
+                  viewBox="0 0 48 48"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <title />
+                  <g data-name="8-Email" id="_8-Email">
+                    <path d="M45,7H3a3,3,0,0,0-3,3V38a3,3,0,0,0,3,3H45a3,3,0,0,0,3-3V10A3,3,0,0,0,45,7Zm-.64,2L24,24.74,3.64,9ZM2,37.59V10.26L17.41,22.17ZM3.41,39,19,23.41l4.38,3.39a1,1,0,0,0,1.22,0L29,23.41,44.59,39ZM46,37.59,30.59,22.17,46,10.26Z" />
+                  </g>
+                </svg>
+                info@shankarhegdeastrologer.com
+              </a>{" "}
             </div>
           </div>
         </div>

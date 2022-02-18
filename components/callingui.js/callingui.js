@@ -15,8 +15,6 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
     }, 2000);
   }, [astrologer]);
 
-  console.log(astrologer);
-
   let rtc = {
     localAudioTrack: null,
     client: null,
@@ -46,7 +44,6 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
       // If the remote user publishes an audio track.
       if (mediaType === "audio") {
         // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
-        alert("audio");
         const remoteAudioTrack = user.audioTrack;
         // Play the remote audio track.
         remoteAudioTrack.play();
@@ -88,7 +85,7 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
 
       setcancelbutton(true);
       console.log("publish success!");
-
+      console.log(document.getElementById("join"));
       document.getElementById("cancel").onclick = async function () {
         // Destroy the local audio track.
         rtc.localAudioTrack.close();
@@ -286,21 +283,20 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
               </div>
             </div>
             <div className="flex gap-10  max-w-sm mx-auto w-full">
-              {canselbutton ? (
+              {canselbutton && (
                 <button
                   id="cancel"
                   className="rounded-md bg-red-500 w-full text-white font-bold p-3"
                 >
                   Cancel
                 </button>
-              ) : (
-                <button
-                  id="join"
-                  className="rounded-md bg-green-400 w-full text-white font-bold  p-3"
-                >
-                  Answer
-                </button>
               )}
+              <button
+                id="join"
+                className="rounded-md bg-green-400 w-full text-white font-bold  p-3"
+              >
+                Answer
+              </button>
             </div>
           </div>
         )}

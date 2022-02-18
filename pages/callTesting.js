@@ -18,17 +18,26 @@ export default function CallingUi() {
       theme: "colored",
     });
 
-  useEffect(async () => {
-    const { data } = await supabase
-      .from("astrologerProfile")
-      .select("id, name,isActive")
-      .eq("id", profile.astrologer);
+  useEffect(() => {
+    if (profile === null) {
+      // router.push("/talktoastrologer")
+      alert("talk");
+    }
+  }, []);
 
-    if (data !== null) {
-      // if (!data[0].isActive) {
-      //   notify();
-      // }
-      setastrologer(data[0]);
+  useEffect(async () => {
+    if (profile !== null) {
+      const { data } = await supabase
+        .from("astrologerProfile")
+        .select("id, name,isActive")
+        .eq("id", profile.astrologer);
+
+      if (data !== null) {
+        // if (!data[0].isActive) {
+        //   notify();
+        // }
+        setastrologer(data[0]);
+      }
     }
     setTimeout(() => {
       startBasicCall(
@@ -68,7 +77,6 @@ export default function CallingUi() {
       // If the remote user publishes an audio track.
       if (mediaType === "audio") {
         // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
-        alert("audio");
         const remoteAudioTrack = user.audioTrack;
         // Play the remote audio track.
         remoteAudioTrack.play();
