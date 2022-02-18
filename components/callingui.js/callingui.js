@@ -15,7 +15,6 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
     }, 2000);
   }, [astrologer]);
 
-  console.log(astrologer);
 
   let rtc = {
     localAudioTrack: null,
@@ -46,7 +45,6 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
       // If the remote user publishes an audio track.
       if (mediaType === "audio") {
         // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
-        alert("audio");
         const remoteAudioTrack = user.audioTrack;
         // Play the remote audio track.
         remoteAudioTrack.play();

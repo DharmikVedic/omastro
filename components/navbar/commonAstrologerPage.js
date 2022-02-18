@@ -35,9 +35,9 @@ export default function Sidebar(props) {
 
   useEffect(async () => {
     const mySubscription = supabase
-      .from("astrologerProfile:currentQueue=eq.true")
+      .from("astrologerProfile")
       .on("*", (payload) => {
-        // console.log("Change received!", payload);
+        console.log("Change received!", payload);
         setrender((prev) => !prev);
         if (payload.new) {
           setrerender(payload.new);

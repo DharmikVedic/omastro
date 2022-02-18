@@ -18,6 +18,8 @@ export default function CombineForm(props) {
       document.removeEventListener("click", handleClickOutside, true);
     };
   });
+
+  
   const handleClose = () => {
     props.passsuccess(true);
   };

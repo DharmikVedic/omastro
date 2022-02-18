@@ -16,6 +16,7 @@ export default function Mobilenav(props) {
       {login && <BlurBackground z="z-30" />}
       <CombineForm
         passactive={handleclose2}
+        passsuccess={handleclose2}
         transition={
           login
             ? "-translate-y-1/2 opacity-100 visible"
