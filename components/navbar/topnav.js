@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useUserData from "../context/logincontextvalue";
 import CombineForm from "../form/combineForm";
 import { BlurBackground } from "../utils/feature";
@@ -10,32 +10,32 @@ function Topnav() {
   const router = useRouter();
   const [displaymenu, setdisplamenu] = useState();
   const url = router.asPath.split("/")[1];
-  const [y, sety] = useState(false);
+  // const [y, sety] = useState(false);
   const [login, setlogin] = useState(false);
-  const [mouted, setmouted] = useState(false);
+  // const [mouted, setmouted] = useState(false);
 
   const { user } = useUserData();
 
-  useEffect(() => {
-    setmouted(true);
-    if (mouted) {
-      window.addEventListener("scroll", (e) => handleNavigation(e));
-      const handleNavigation = (e) => {
-        const window1 = e.currentTarget;
-        const scroll =
-          window1.pageYOffset || document.documentElement.scrollTop;
-        if (scroll > 100) {
-          sety(true);
-        } else {
-          sety(false);
-        }
-      };
-    }
-    return () => {
-      setmouted(false);
-      window.removeEventListener("scroll", handleNavigation);
-    };
-  }, [mouted]);
+  // useEffect(() => {
+  //   setmouted(true);
+  //   if (mouted) {
+  //     window.addEventListener("scroll", (e) => handleNavigation(e));
+  //     const handleNavigation = (e) => {
+  //       const window1 = e.currentTarget;
+  //       const scroll =
+  //         window1.pageYOffset || document.documentElement.scrollTop;
+  //       if (scroll > 100) {
+  //         sety(true);
+  //       } else {
+  //         sety(false);
+  //       }
+  //     };
+  //   }
+  //   return () => {
+  //     setmouted(false);
+  //     window.removeEventListener("scroll", handleNavigation);
+  //   };
+  // }, [mouted]);
 
   const handleclose = (e) => {
     setdisplamenu((prev) => !prev);
@@ -51,6 +51,7 @@ function Topnav() {
       {login && <BlurBackground z="z-30" />}
       <CombineForm
         passactive={handleclose2}
+        passsuccess={handleclose2}
         transition={
           login
             ? "-translate-y-1/2 opacity-100 visible"
@@ -94,7 +95,7 @@ function Topnav() {
                   fillRule="evenodd"
                 />
               </svg>
-              ₹ 50
+              ₹ 0
             </div>
             <button
               className="md:hidden ml-auto block"
@@ -144,7 +145,7 @@ function Topnav() {
               {user !== null ? (
                 <div className="relative group py-2 cursor-default">
                   <div className="border-2  shadow-lg shadow-red-300/30 border-red-500 text-sm text-red-500 font-semibold py-1 px-4 rounded-md">
-                    {user?.email}
+                    {user.user_metadata?.name}
                     <button
                       onClick={async () => await signOut()}
                       className="group-hover:opacity-100 cursor-pointer group-hover:visible invisible opacity-0 absolute top-full left-0  py-2 px-7 bg-zinc-100 rounded-md text-zinc-800 "

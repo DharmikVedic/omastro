@@ -104,7 +104,7 @@ export default function AstrologerLogin(props) {
           )}
           <button
             type="submit"
-            className="mt-5 text-lg font-bold hover:bg-blue-600 bg-blue-500 py-3 px-6 rounded text-white"
+            className="mt-5 text-lg font-bold hover:bg-red-600 bg-red-500 py-3 px-6 rounded text-white"
           >
             Sign in
           </button>

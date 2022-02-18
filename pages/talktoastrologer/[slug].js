@@ -1,7 +1,12 @@
 const astrologer = require("../../components/jsondata/astrologerdata.json");
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { color } from ".";
+import useUserData from "../../components/context/logincontextvalue";
+import useCurrentAstrologer from "../../components/context/profileContextvalue";
+import CombineForm from "../../components/form/combineForm";
 import { supabase } from "../../components/supabase/supaclient";
+import { BlurBackground } from "../../components/utils/feature";
 // import { BlurBackground, RechargeWallet } from "../../components/utils/feature";
 
 export async function getStaticPaths() {
@@ -33,9 +38,33 @@ export async function getStaticProps({ params }) {
 }
 
 export default function Astrologer({ data }) {
-  const [rechargepop, setrechargepop] = useState(false);
+  // const [rechargepop, setrechargepop] = useState(false);
+  const router = useRouter();
+  const [login, setlogin] = useState(false);
 
-  console.log(data);
+  const { user } = useUserData();
+  const { storeCurrentAstrologer } = useCurrentAstrologer();
+
+  const handleCall = () => {
+    if (user === null) {
+      setlogin(true);
+    } else {
+      router.push("/talktoastrologer/call-intake/call-intake-form");
+      storeCurrentAstrologer(data[0].id, user.email);
+    }
+  };
+
+  const handleclose2 = () => {
+    setlogin(false);
+  };
+
+  const handleFormSuccess = (e) => {
+    if (e && user !== null) {
+      router.push("/talktoastrologer/call-intake/call-intake-form");
+      setlogin(false);
+      storeCurrentAstrologer(data[0].id, user.email);
+    }
+  };
 
   return (
     <>
@@ -46,6 +75,16 @@ export default function Astrologer({ data }) {
           rechargepop ? " opacity-100 visible" : " opacity-0 invisible"
         }`}
       /> */}
+      {login && <BlurBackground z="z-30" />}
+      <CombineForm
+        passactive={handleclose2}
+        passsuccess={handleFormSuccess}
+        transition={
+          login
+            ? "-translate-y-1/2 opacity-100 visible"
+            : "translate-y-0 opacity-0 invisible"
+        }
+      />
       <div className="py-40 bg-zinc-50 px-5">
         <div className="flex flex-col gap-12 md:gap-14 max-w-5xl mx-auto ">
           <div className=" border bg-white shadow-lg    md:px-16 px-10 py-8 md:py-16 border-red-300 shadow-red-100 flex gap-10 rounded-[20px] md:gap-20 flex-row items-start md:items-center">
@@ -129,7 +168,7 @@ export default function Astrologer({ data }) {
                 </span>
               </div>
               <button
-                onClick={() => setrechargepop(true)}
+                onClick={handleCall}
                 disabled={!data[0].isActive}
                 className={`${
                   data[0].isActive
@@ -137,7 +176,18 @@ export default function Astrologer({ data }) {
                     : "bg-red-500 opacity-70 cursor-not-allowed"
                 } mt-2 max-w-xs gap-10 w-full  whitespace-nowrap transition-all duration-150 ease-in  items-center justify-between  flex  py-3 px-6 rounded-full text-white font-bold text-lg`}
               >
-                Call Now <span>₹{data[0].price}/Min</span>
+                <span className="flex items-center gap-2">
+                  <svg
+                    className="w-6 h-6 fill-white"
+                    viewBox="0 0 48 48"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M0 0h48v48h-48z" fill="none" />
+                    <path d="M13.25 21.59c2.88 5.66 7.51 10.29 13.18 13.17l4.4-4.41c.55-.55 1.34-.71 2.03-.49 2.24.74 4.65 1.14 7.14 1.14 1.11 0 2 .89 2 2v7c0 1.11-.89 2-2 2-18.78 0-34-15.22-34-34 0-1.11.9-2 2-2h7c1.11 0 2 .89 2 2 0 2.49.4 4.9 1.14 7.14.22.69.06 1.48-.49 2.03l-4.4 4.42z" />
+                  </svg>
+                  Call Now
+                </span>
+                <span className="font-bold">₹{data[0].price}/Min</span>
               </button>
             </div>
           </div>

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BlurBackground } from "../utils/feature";
 import LoginForm from "./loginForm";
 import RegisterForm from "./registerForm";
 
@@ -20,7 +19,7 @@ export default function CombineForm(props) {
     };
   });
   const handleClose = () => {
-    props.passactive(true);
+    props.passsuccess(true);
   };
   return (
     <>

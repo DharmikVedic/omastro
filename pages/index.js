@@ -81,38 +81,37 @@ export default function Home() {
 
   return (
     <div>
-      <Section
-        section={
-          "pt-36 md:bg-[url('/imgs/hero-gradient.png')] bg-cover bg-no-repeat bg-center md:pt-36  pb-20"
-        }
-        py={"py-3 "}
-        px={"md:px-14 px-8"}
-        extra=" items-center md:bg-gradient-to-tr from-violet-50 to-red-50 md:border-2 border-red-300  max-w-6xl mx-auto  items-center md:flex-row flex-col flex gap-14 md:gap-20 rounded-[30px] "
-      >
-        <div className="w-full flex flex-col gap-10 ">
-          <Header lineheight={1.25} extra="md:text-5xl text-4xl ">
-            Have a Question?
-            <br /> Just Ask! Get real time predictions
-          </Header>
-          <button
-            onClick={() => router.push("/talktoastrologer")}
-            className="bg-red-500 hover:-translate-y-1.5 duration-150 ease-in hover:bg-white border-2 border-transparent hover:border-red-400 p-4 shadow-lg shadow-red-500/30 font-bold text-white hover:text-red-500 text-xl rounded-full max-w-[200px] w-full"
-          >
-            Call Now
-          </button>
-        </div>
-        <div className="w-full flex items-center">
-          <img
-            src="/imgs/question.png"
-            className="w-full md:w-11/12"
-            alt="question"
-          />
-        </div>
-      </Section>
+      <div className="md:px-5 pt-36 md:bg-[url('/imgs/hero-gradient.png')] bg-cover bg-no-repeat bg-center md:pt-36  pb-20">
+        <Section
+          py={"py-3 "}
+          px={"md:px-14 px-8"}
+          extra=" items-center md:bg-gradient-to-tr from-violet-50 to-red-50 md:border-2 border-red-300  max-w-6xl mx-auto  items-center md:flex-row flex-col flex gap-14 md:gap-20 rounded-[30px] "
+        >
+          <div className="w-full  flex flex-col gap-10 ">
+            <Header lineheight={1.25} extra="md:text-5xl text-4xl ">
+              Have a Question?
+              <br /> Just Ask! Get real time predictions
+            </Header>
+            <button
+              onClick={() => router.push("/talktoastrologer")}
+              className="bg-red-500 hover:-translate-y-1.5 duration-150 ease-in hover:bg-white border-2 border-transparent hover:border-red-400 p-4 shadow-lg shadow-red-500/30 font-bold text-white hover:text-red-500 text-xl rounded-full max-w-[200px] w-full"
+            >
+              Call Now
+            </button>
+          </div>
+          <div className="w-full flex items-center">
+            <img
+              src="/imgs/question.png"
+              className="w-full md:w-11/12"
+              alt="question"
+            />
+          </div>
+        </Section>
+      </div>
 
       <Section
         py="py-24"
-        section="bg-white"
+        section="bg-red-50  md:bg-white"
         extra="flex flex-col items-center gap-12"
       >
         <div className="max-w-4xl flex flex-col gap-4 text-center mx-auto ">

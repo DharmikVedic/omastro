@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import useUserData from "../context/logincontextvalue";
 import useCurrentAstrologer from "../context/profileContextvalue";
+import { supabase } from "../supabase/supaclient";
 import Sample from "./asynctypehead";
 
-export default function UserProfileForm(props) {
+export default function UserProfileForm() {
   const [typehead, settypehead] = useState(false);
   const [error, seterror] = useState(null);
 
-  const { profile, storeCurrentAstrologer } = useCurrentAstrologer();
-
+  const { profile } = useCurrentAstrologer();
+  const { user } = useUserData();
 
   let initialValue = {
     name: "",
@@ -16,16 +19,12 @@ export default function UserProfileForm(props) {
     year: "",
     hour: "",
     min: "",
-    // time: "AM",
     country: "India",
     place: "",
     topic_of_concern: "",
     occupation: "",
     martial_status: "",
     gender: "",
-    // tzone: "",
-    // lat: "",
-    // lon: "",
   };
   const [formValue, setformValue] = useState(initialValue);
   const [formError, setformError] = useState(initialValue);
@@ -33,6 +32,7 @@ export default function UserProfileForm(props) {
   if (error) {
     setTimeout(() => seterror(null), 2000);
   }
+  const router = useRouter();
   const submitingform = async (e) => {
     e.preventDefault();
     setformError(validay(formValue));
@@ -42,20 +42,53 @@ export default function UserProfileForm(props) {
       setformValue(formValue);
     } else if (Object.keys(validay(formValue)).length === 0) {
       let rea = Object.assign({}, formValue);
-      const { data, error } = await supabase.from("astrologerProfile").insert([
-        {
-          ...rea,
-          email: session.email,
-          astrologerId: md5(session.email),
-        },
-      ]);
-      storeCurrentAstrologer(profile.astrologer, data.id);
+      const { data } = await supabase
+        .from("astrologerProfile")
+        .select("id, astrologerId")
+        .eq("id", profile.astrologer);
+      if (data !== null) {
+        pushData(data[0].astrologerId, rea);
+        storedataForAstrologer(
+          { ...rea, email: user.email },
+          data[0].astrologerId
+        );
+        router.push("/callTesting");
+      }
+
       seterror(null);
     } else {
       setformError(validay(formValue));
       seterror("Please enter correct day");
     }
   };
+
+  const storedataForAstrologer = async (d, astroid) => {
+    const { data } = await supabase
+      .from("astrologerProfile")
+      .select("callingHistory")
+      .eq("astrologerId", astroid);
+
+    data[0].callingHistory.history.push(d);
+
+    const r = await supabase
+      .from("astrologerProfile")
+      .update({
+        currentQueue:true,
+        callingHistory: { history: data[0].callingHistory.history },
+      })
+      .eq("astrologerId", astroid);
+  };
+
+  const pushData = async (id, rea) => {
+    const { data, error } = await supabase.from("userIntakeFormDetail").insert([
+      {
+        ...rea,
+        email: user.email,
+        astrologerId: id,
+      },
+    ]);
+  };
+
   const validay = (values) => {
     let error = {};
     if (!values.name) {
@@ -122,10 +155,10 @@ export default function UserProfileForm(props) {
     <>
       <form
         onSubmit={submitingform}
-        className="max-w-xl  mx-auto bg-gray-50 shadow-lg  p-6 sm:p-10 rounded-md w-full flex  flex-col gap-8 md:gap-12 "
+        className="max-w-xl  mx-auto   p-6 sm:p-10 rounded-md w-full flex  flex-col gap-9 md:gap-12 "
       >
-        <div className="flex gap-5">
-          <div className="w-full flex relative  flex-col pt-2 gap-4 ">
+        <div className="flex gap-5 items-center">
+          <div className="w-full flex relative  flex-col  gap-4 ">
             <input
               type="text"
               value={formValue.name}
@@ -133,10 +166,10 @@ export default function UserProfileForm(props) {
               onChange={handleInput}
               id="name"
               name="name"
-              className={`w-full py-2 bg-transparent text-zinc-800  border-b-2 ${
+              className={`w-full py-2.5 px-2 bg-transparent text-zinc-800  border rounded ${
                 formError.name && formValue.name === ""
                   ? "border-red-500"
-                  : "border-zinc-400"
+                  : "border-zinc-400 focus:ring-green-100 focus:ring-4"
               }  focus:border-green-500      `}
             />
           </div>
@@ -145,10 +178,10 @@ export default function UserProfileForm(props) {
               name="gender"
               id="gender"
               value={formValue.gender}
-              className={`text-zinc-800  py-3 border-b-2 w-full focus:border-green-500 focus:outline-none ${
+              className={`text-zinc-800  py-2.5 px-2 border rounded w-full focus:border-green-500 focus:outline-none ${
                 formError.gender && formValue.gender === ""
                   ? "border-red-500"
-                  : "border-zinc-400"
+                  : "border-zinc-400 focus:ring-green-100 focus:ring-4"
               }`}
               onChange={handleInput}
             >
@@ -163,7 +196,7 @@ export default function UserProfileForm(props) {
           {/*    {data.key.date}:*/}
           {/*</label>*/}
           <div className="grid grid-cols-4 gap-5 sm:items-center w-full ">
-            <div className="w-full flex relative  flex-col pt-2 gap-4 ">
+            <div className="w-full flex relative  flex-col  gap-4 ">
               <input
                 type="number"
                 value={formValue.day}
@@ -173,10 +206,10 @@ export default function UserProfileForm(props) {
                 onChange={handleNumber}
                 id="day"
                 name="day"
-                className={`w-full st bg-transparent py-2 text-zinc-800  border-b-2 ${
+                className={`w-full st bg-transparent py-2.5 px-2 text-zinc-800  border rounded ${
                   formError.day && formValue.day === ""
                     ? "border-red-500"
-                    : "border-zinc-400"
+                    : "border-zinc-400 focus:ring-green-100 focus:ring-4"
                 }  focus:border-green-500    `}
               />
             </div>
@@ -184,10 +217,10 @@ export default function UserProfileForm(props) {
               <select
                 name="month"
                 value={formValue.month}
-                className={`text-zinc-800  py-3 border-b-2 w-full  focus:border-green-500 focus:outline-none ${
+                className={`text-zinc-800  py-2.5 px-2 border rounded w-full  focus:border-green-500 focus:outline-none ${
                   formError.month && formValue.month === ""
                     ? "border-red-500"
-                    : "border-zinc-400"
+                    : "border-zinc-400 focus:ring-green-100 focus:ring-4"
                 }`}
                 onChange={handleNumber}
               >
@@ -206,7 +239,7 @@ export default function UserProfileForm(props) {
                 <option value="12">December</option>
               </select>
             </div>
-            <div className="w-full flex relative  flex-col pt-2 gap-4 ">
+            <div className="w-full flex relative  flex-col  gap-4 ">
               <input
                 type="number"
                 value={formValue.year}
@@ -216,10 +249,10 @@ export default function UserProfileForm(props) {
                 onChange={handleNumber}
                 id="year"
                 name="year"
-                className={`w-full  bg-transparent py-2 text-zinc-800  border-b-2 ${
+                className={`w-full  bg-transparent py-2.5 px-2 text-zinc-800  border rounded ${
                   formError.year && formValue.year === ""
                     ? "border-red-500"
-                    : "border-zinc-400"
+                    : "border-zinc-400 focus:ring-green-100 focus:ring-4"
                 }  focus:border-green-500    `}
               />
             </div>
@@ -232,10 +265,10 @@ export default function UserProfileForm(props) {
                 name="hour"
                 id="hour"
                 value={formValue.hour}
-                className={`text-zinc-800  py-3 border-b-2 w-full focus:border-green-500 focus:outline-none ${
+                className={`text-zinc-800  py-2.5 px-2 border rounded w-full focus:border-green-500 focus:outline-none ${
                   formError.hour && formValue.hour === ""
                     ? "border-red-500"
-                    : "border-zinc-400"
+                    : "border-zinc-400 focus:ring-green-100 focus:ring-4"
                 }`}
                 onChange={handleNumber}
               >
@@ -270,10 +303,10 @@ export default function UserProfileForm(props) {
               <select
                 name="min"
                 value={formValue.min}
-                className={`text-zinc-800   py-3 border-b-2 w-full  focus:border-green-500 focus:outline-none ${
+                className={`text-zinc-800   py-2.5 px-2 border rounded w-full  focus:border-green-500 focus:outline-none ${
                   formError.min && formValue.min === ""
                     ? "border-red-500"
-                    : "border-zinc-400"
+                    : "border-zinc-400 focus:ring-green-100 focus:ring-4"
                 }`}
                 onChange={handleNumber}
               >
@@ -349,10 +382,10 @@ export default function UserProfileForm(props) {
           <select
             name="martial_status"
             value={formValue.martial_status}
-            className={`text-zinc-800  py-3 border-b-2 w-full  focus:border-green-500 focus:outline-none ${
+            className={`text-zinc-800  py-2.5 px-2 border rounded w-full  focus:border-green-500 focus:outline-none ${
               formError.martial_status && formValue.martial_status === ""
                 ? "border-red-500"
-                : "border-zinc-400"
+                : "border-zinc-400 focus:ring-green-100 focus:ring-4"
             }`}
             onChange={handleInput}
           >
@@ -368,10 +401,10 @@ export default function UserProfileForm(props) {
           <select
             name="occupation"
             value={formValue.occupation}
-            className={`text-zinc-800  py-3 border-b-2 w-full  focus:border-green-500 focus:outline-none ${
+            className={`text-zinc-800  py-2.5 px-2 border rounded w-full  focus:border-green-500 focus:outline-none ${
               formError.occupation && formValue.occupation === ""
                 ? "border-red-500"
-                : "border-zinc-400"
+                : "border-zinc-400 focus:ring-green-100 focus:ring-4"
             }`}
             onChange={handleInput}
           >
@@ -391,10 +424,10 @@ export default function UserProfileForm(props) {
           <select
             name="topic_of_concern"
             value={formValue.topic_of_concern}
-            className={`text-zinc-800  py-3 border-b-2 w-full  focus:border-green-500 focus:outline-none ${
+            className={`text-zinc-800  py-2.5 px-2 border rounded w-full  focus:border-green-500 focus:outline-none ${
               formError.topic_of_concern && formValue.topic_of_concern === ""
                 ? "border-red-500"
-                : "border-zinc-400"
+                : "border-zinc-400 focus:ring-green-100 focus:ring-4"
             }`}
             onChange={handleInput}
           >
@@ -433,7 +466,7 @@ export default function UserProfileForm(props) {
         </div>
         {error !== null ? (
           <span
-            className={`border-l-4 border-red-500 py-2 text-red-700 bg-red-50  text-lg   w-full pl-3`}
+            className={`border-l-4 border-red-500 py-2.5 px-2 text-red-700 bg-red-50  text-lg   w-full pl-3`}
           >
             {error}
           </span>

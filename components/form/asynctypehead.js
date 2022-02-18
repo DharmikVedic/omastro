@@ -63,7 +63,7 @@ export default function Sample(props) {
             onChange={handlecountry}
             name="country"
             defaultValue={selectedcountry}
-            className="w-full sm:w-[170px] truncate pr-3 selectCountry text-zinc-800 dark:text-zinc-100 bg-transparent border-b-2 border-zinc-400 focus:border-sky-500  py-2  "
+            className="w-full sm:w-[170px] truncate pr-3 focus:ring-4 focus:ring-green-100  selectCountry text-zinc-800 dark:text-zinc-100 bg-transparent border rounded px-2 border-zinc-400 focus:border-green-400  py-2  "
           >
             {country.map((item, i) => (
               <option value={item.country_name} key={i}>
@@ -75,7 +75,7 @@ export default function Sample(props) {
         <div className=" w-full">
           <div className="w-full">
             <AsyncTypeahead
-              className=" w-full text-zinc-800 dark:text-zinc-100 bg-gray-50 dark:bg-zinc-800"
+              className=" w-full text-zinc-800 dark:text-zinc-100 bg-white dark:bg-zinc-800"
               ref={typeahead}
               filterBy={filterBy}
               id="place"

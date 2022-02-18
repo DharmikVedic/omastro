@@ -1,31 +1,43 @@
-// import "../components/AgoraRTC-N-4.2.1";
-// const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+import Head from "next/head";
+import { Router, useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import useCurrentAstrologer from "../components/context/profileContextvalue";
+import { supabase } from "../components/supabase/supaclient";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function Home() {
-  // useEffect(() => {
-  //   handlupdate();
-  // }, []);
+export default function CallingUi() {
+  const [canselbutton, setcancelbutton] = useState(false);
 
-  const handlupdate = () => {
-    fetch(
-      " https://08a844fjsd.execute-api.ap-south-1.amazonaws.com/default/agoratokenweb",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ channel: "test", uid: 123 }),
-      }
-    )
-      .then((r) => r.json())
-      .then((d) => {
-        console.log(d);
-        startBasicCall(
-          "006805fca18065d4589872cee8ad99784b3IAA1hyO8DvzEhaO5mKucyEJHb9Tus5xLSHY5RWjGR4s0WAx+f9gAAAAAIgDzxwcSYJIOYgQAAQBgkg5iAgBgkg5iAwBgkg5iBABgkg5i",
-          123,
-          "test"
-        );
-      })
-      .catch((err) => console.log(err));
-  };
+  const [astrologer, setastrologer] = useState(null);
+
+  const { profile } = useCurrentAstrologer();
+  const router = useRouter();
+  const notify = () =>
+    toast.error("Astrologer is offline please try agnain later", {
+      theme: "colored",
+    });
+
+  useEffect(async () => {
+    const { data } = await supabase
+      .from("astrologerProfile")
+      .select("id, name,isActive")
+      .eq("id", profile.astrologer);
+
+    if (data !== null) {
+      // if (!data[0].isActive) {
+      //   notify();
+      // }
+      setastrologer(data[0]);
+    }
+    setTimeout(() => {
+      startBasicCall(
+        "006805fca18065d4589872cee8ad99784b3IABiW3bCRtsdOwrbfV3Q/KqdzBiPz9gKTroyYMkNNHtkCgx+f9gAAAAAIgDzxwcSddkQYgQAAQB02RBiAgB02RBiAwB02RBiBAB02RBi",
+        123,
+        "test"
+      );
+    }, 1000);
+  }, [profile]);
 
   let rtc = {
     localAudioTrack: null,
@@ -39,7 +51,7 @@ export default function Home() {
       // Set the channel name.
       channel: channel,
       // Pass your temp token here.
-      token: null,
+      token: token,
       // Set the user ID.
       uid: null,
     };
@@ -56,6 +68,7 @@ export default function Home() {
       // If the remote user publishes an audio track.
       if (mediaType === "audio") {
         // Get the RemoteAudioTrack object in the AgoraRTCRemoteUser object.
+        alert("audio");
         const remoteAudioTrack = user.audioTrack;
         // Play the remote audio track.
         remoteAudioTrack.play();
@@ -76,122 +89,94 @@ export default function Home() {
         options.token,
         options.uid
       );
+      // if (astrologer?.isActive === false) {
+      //   notify();
+      // } else {
       // Create a local audio track from the audio sampled by a microphone.
       rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
       // Publish the local audio tracks to the RTC channel.
       await rtc.client.publish([rtc.localAudioTrack]);
 
+      let isAudioAutoplayFailed = false;
+      AgoraRTC.onAudioAutoplayFailed = () => {
+        if (isAudioAutoplayFailed) return;
+
+        isAudioAutoplayFailed = true;
+        const btn = document.createElement("button");
+        btn.innerText = "Click me to resume the audio playback";
+        btn.onClick = () => {
+          isAudioAutoplayFailed = false;
+          btn.remove();
+        };
+        document.body.append(btn);
+      };
+      setcancelbutton(true);
+      const { data } = await supabase
+        .from("astrologerProfile")
+        .update({
+          currentQueue: true,
+        })
+        .eq("id", profile.astrologer);
+
       console.log("publish success!");
 
       document.getElementById("cancel").onclick = async function () {
-        // Destroy the local audio track.
         rtc.localAudioTrack.close();
 
-        // Leave the channel.
         await rtc.client.leave();
+
+        const { data } = await supabase
+          .from("astrologerProfile")
+          .update({
+            currentQueue: false,
+          })
+          .eq("id", profile.astrologer);
+        router.replace("/");
       };
+      // }
     };
   }
-
-  // const join =
-
   return (
     <>
-      <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.1.js"></script>
+      <Head>
+        <script
+          async
+          src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.1.js"
+        ></script>
+      </Head>
+      <ToastContainer />
 
-      <div className="flex flex-col items-center justify-center min-h-screen py-2">
-        <h1> hello world</h1>
-
-        <button
-          className="bg-red-400 p-3.5 text-zinc-800 w-40 rounded-md mt-5"
-          onClick={() =>
-            startBasicCall(
-              "006805fca18065d4589872cee8ad99784b3IAC9p8Aq64Xagg79wQs0BC7sjpkIyFWvALeoWmt2zumtAQx+f9gAAAAAIgAWylBUqVwPYgQAAQCoXA9iAgCoXA9iAwCoXA9iBACoXA9i",
-              123,
-              "test"
-            )
-          }
-        >
-          Start
-        </button>
-
-        <button
-          id="join"
-          className="bg-indigo-500 p-3.5 text-white w-40 rounded-md mt-5"
-        >
-          join
-        </button>
-
-        <button
-          id="cancel"
-          className="bg-indigo-500 p-3.5 text-white w-40 rounded-md mt-5"
-        >
-          cancel
-        </button>
+      <div className="bg-green-50 h-screen fixed w-full z-50 py-20 ">
+        <div className="flex flex-col gap-24 max-w-sm mx-auto ">
+          <div className="shadow-xl bg-white rounded-lg flex flex-col gap-3 px-5 max-w-sm text-white py-6">
+            <h5 className="capitalize items-center text-zinc-800 flex flex-col gap-5  pb-2 ">
+              <img
+                src="/imgs/user.png"
+                className="w-[100px]"
+                alt="Astrologer"
+              />
+              {astrologer?.name ?? "test"}
+            </h5>
+          </div>
+          <div className="flex gap-10 ">
+            {canselbutton ? (
+              <button
+                id="cancel"
+                className="rounded-md bg-red-500 w-full text-white font-bold p-3"
+              >
+                Cancel
+              </button>
+            ) : (
+              <button
+                id="join"
+                className="rounded-md bg-green-400 w-full text-white font-bold  p-3"
+              >
+                Call
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </>
   );
 }
-
-// const [sig, setsig] = useState({ token: "", order: "" });
-//   const handle = () => {
-//     fetch("/api/testing", {
-//       method: "POST",
-//       body: JSON.stringify({ name: "dharmik" }),
-//     });
-//   };
-
-//   function onScriptLoad(token, order) {
-//     var config = {
-//       root: "",
-//       flow: "DEFAULT",
-//       data: {
-//         orderId: order /* update order id */,
-//         token: token /* update token value */,
-//         tokenType: "TXN_TOKEN",
-//         amount: 10 /* update amount */,
-//       },
-//       handler: {
-//         notifyMerchant: function (eventName, data) {
-//           console.log("notifyMerchant handler function called");
-//           console.log("eventName => ", eventName);
-//           console.log("data => ", data);
-//         },
-//       },
-//     };
-//     if (typeof window !== "undefined") {
-//       if (window.Paytm && window.Paytm.CheckoutJS) {
-//         //initialze configuration using init method
-//         console.log(config);
-//         window.Paytm.CheckoutJS.init(config)
-//           .then(function onSuccess() {
-//             // after successfully updating configuration, invoke JS Checkout
-//             window.Paytm.CheckoutJS.invoke();
-//           })
-//           .catch(function onError(error) {
-//             console.log("error => ", error);
-//           });
-//       }
-//     }
-//   }
-
-//   // const handle = () => {
-//   //   fetch(
-//   //     "https://ewwb8fmca0.execute-api.ap-south-1.amazonaws.com/default/vedicrishilambda",
-//   //     {
-//   //       method: "POST",
-//   //       body: JSON.stringify({
-//   //         operation: "paytm_token",
-//   //         amount: 10,
-//   //         order_id: "Order_15",
-//   //         mode: "TEST",
-//   //       }),
-//   //     }
-//   //   )
-//   //     .then((res) => res.json())
-//   //     .then((r) => {
-//   //       console.log(r);
-//   //       onScriptLoad(r.response.token, r.response.order_id);
-//   //       setsig({ token: r.response.token, order: r.response.order_id });
-//   //     });
-//   // };

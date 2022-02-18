@@ -1,5 +1,5 @@
 import React from "react";
-import UserProfileForm from "../../components/form/userProfileForm";
+import UserProfileForm from "../../../components/form/userProfileForm";
 
 export default function CallIntakForm() {
   return (

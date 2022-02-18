@@ -1,12 +1,12 @@
 import React from "react";
-import Sidebar from "../../components/navbar/sidebar";
+import Sidebar from "../../components/navbar/commonAstrologerPage";
 
 export default function CallHistory() {
   return (
-    <div>
+    <>
       <Sidebar active="call-history">
-        <div className="w-full h-screen  overflow-y-scroll bg-gray-50 px-5 md:px-10 py-20 md:py-12">
-          <div className="flex flex-col gap-10 ">
+        <div className="w-full h-screen  overflow-y-scroll bg-gray-50 px-5 md:px-10 py-20  md:py-12">
+          <div className="flex flex-col gap-10 mt-8 md:mt-0">
             <h3>Call History</h3>
             <div className="max-w-xl gap-6 p-5 md:px-10 py-4 flex flex-col">
               <div className="flex border-2 border-green-400 p-5 rounded-lg bg-white relative py-6 flex-col gap-2 ">
@@ -109,6 +109,6 @@ export default function CallHistory() {
           </div>
         </div>
       </Sidebar>
-    </div>
+    </>
   );
 }

@@ -1,38 +1,21 @@
+import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import { supabase } from "../components/supabase/supaclient";
+import { supabase } from "../supabase/supaclient";
+import { BlurBackground } from "../utils/feature";
 
-export default function CallingUi() {
-  const userdata = {
-    isActive: true,
-    place: "Susner, Madhya Pradesh",
-    month: 2,
-    min: 7,
-    martial_status: "divorced",
-    astrologerId: "abc@gopal",
-    year: 2000,
-    name: "dharmik rathod",
-    topic_of_concern: "Education",
-    country: "India",
-    occupation: "bussiness/self employed",
-    day: 3,
-    gender: "male",
-    hour: 5,
-  };
-  const [astrologer, setastrologer] = useState(null);
+export default function CallingUi({ astrologerid, astrologer, closepopup }) {
+  const [canselbutton, setcancelbutton] = useState();
+  useEffect(() => {
+    setTimeout(() => {
+      startBasicCall(
+        "006805fca18065d4589872cee8ad99784b3IABiW3bCRtsdOwrbfV3Q/KqdzBiPz9gKTroyYMkNNHtkCgx+f9gAAAAAIgDzxwcSddkQYgQAAQB02RBiAgB02RBiAwB02RBiBAB02RBi",
+        123,
+        "test"
+      );
+    }, 2000);
+  }, [astrologer]);
 
-  useEffect(async () => {
-    const { data } = await supabase
-      .from("astrologerProfile")
-      .select("callingHistory")
-      .eq("email", profile.currentuser);
-    console.log(data);
-    setastrologer(data[0]);
-    startBasicCall(
-      "006805fca18065d4589872cee8ad99784b3IAC9p8Aq64Xagg79wQs0BC7sjpkIyFWvALeoWmt2zumtAQx+f9gAAAAAIgAWylBUqVwPYgQAAQCoXA9iAgCoXA9iAwCoXA9iBACoXA9i",
-      123,
-      "test"
-    );
-  }, [profile]);
+  console.log(astrologer);
 
   let rtc = {
     localAudioTrack: null,
@@ -103,6 +86,7 @@ export default function CallingUi() {
         document.body.append(btn);
       };
 
+      setcancelbutton(true);
       console.log("publish success!");
 
       document.getElementById("cancel").onclick = async function () {
@@ -111,18 +95,30 @@ export default function CallingUi() {
 
         // Leave the channel.
         await rtc.client.leave();
+        closepopup(true);
+        const { data } = await supabase
+          .from("astrologerProfile")
+          .update({
+            currentQueue: false,
+          })
+          .eq("id", astrologerid);
       };
     };
   }
-
   return (
     <>
-      <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.1.js"></script>
-      <div className="bg-violet-50 h-[400px] w-[500px] fixed z-50 py-20 ">
+      <Head>
+        <script
+          async
+          src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.1.js"
+        ></script>
+      </Head>
+      <BlurBackground />
+      <div className="bg-white shadow-xl max-h-max w-[450px] px-5 fixed z-50 py-10 top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-xl">
         {astrologer !== null && (
-          <div className="flex flex-col gap-14 max-w-sm mx-auto ">
-            <div className="shadow-xl flex flex-col gap-3 px-5 max-w-sm bg-violet-500 text-white py-6 rounded-md">
-              <h5 className="capitalize text-white border-b border-violet-50 pb-2 ">
+          <div className="flex flex-col gap-14 w-full mx-auto ">
+            <div className="border border-red-400  flex flex-col gap-3 px-5 mx-auto w-full max-w-sm  text-zinc-800 py-6 rounded-md">
+              <h5 className="capitalize text-zinc-800 border-b border-red-300 pb-2 ">
                 {astrologer?.name}
               </h5>
 
@@ -289,19 +285,22 @@ export default function CallingUi() {
                 {astrologer?.topic_of_concern}
               </div>
             </div>
-            <div className="flex gap-10 ">
-              <button
-                id="cancel"
-                className="rounded-md bg-red-500 w-full text-white font-bold p-3"
-              >
-                Cancel
-              </button>
-              <button
-                id="join"
-                className="rounded-md bg-green-400 w-full text-white font-bold  p-3"
-              >
-                Answer
-              </button>
+            <div className="flex gap-10  max-w-sm mx-auto w-full">
+              {canselbutton ? (
+                <button
+                  id="cancel"
+                  className="rounded-md bg-red-500 w-full text-white font-bold p-3"
+                >
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  id="join"
+                  className="rounded-md bg-green-400 w-full text-white font-bold  p-3"
+                >
+                  Answer
+                </button>
+              )}
             </div>
           </div>
         )}

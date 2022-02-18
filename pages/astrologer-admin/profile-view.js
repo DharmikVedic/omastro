@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/navbar/sidebar";
+import Sidebar from "../../components/navbar/commonAstrologerPage";
 import { supabase } from "../../components/supabase/supaclient";
 import { astrologerDetail } from "../../components/utils/localuserdata";
 import { ToastContainer, toast } from "react-toastify";
@@ -117,14 +117,14 @@ export default function ProfileVeiw() {
       <ToastContainer />
       <Sidebar hide={true} active="profile">
         <div className="pt-24 md:pt-20 pb-32 overflow-y-scroll w-full bg-gray-50 h-screen ">
-          <div className="w-full    flex-col gap-12 items-center   flex justify-center px-5 md:px-10">
-            <div className="flex  items-center  gap-6 font-bold text-2xl">
+          <div className="w-full bg-white max-w-xl mx-auto py-10 rounded-md shadow-xl  flex-col gap-8 items-center   flex justify-center px-5 md:px-10">
+            <div className="flex flex-col items-center  gap-6 font-bold text-2xl">
               <img src="/imgs/user.png" className="w-[80px] " alt="profile" />
               <span className="capitalize">{value?.name || "Test"} </span>
             </div>
             <form
               onSubmit={submitingform}
-              className="max-w-xl  rounded w-full flex  flex-col gap-7 md:gap-10 "
+              className="max-w-xl  rounded w-full flex  flex-col gap-7 md:gap-9 "
             >
               <div className="w-full flex relative  flex-col pt-2 gap-3 ">
                 <label htmlFor="name">Name:</label>
@@ -160,7 +160,7 @@ export default function ProfileVeiw() {
                     }  focus:border-green-500 focus:ring-4 focus:ring-green-100  caret-green-500   `}
                   />
                 </div>
-                <div className="w-full flex flex-col pt-2 gap-3 md:max-w-[150px]">
+                <div className="w-full flex flex-col pt-2 gap-3">
                   <label htmlFor="gender"> Gender:</label>
                   <select
                     name="gender"

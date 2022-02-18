@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/navbar/sidebar";
+import Sidebar from "../../components/navbar/commonAstrologerPage";
 import { supabase } from "../../components/supabase/supaclient";
 const md5 = require("md5");
 export default function AstrologerIndex(props) {
@@ -40,7 +40,7 @@ export default function AstrologerIndex(props) {
   return (
     <div className="w-full  bg-gray-50 overflow-y-scroll h-screen flex">
       <Sidebar active="home">
-        <div className="w-full overflow-y-scroll h-screen pb-24 md:mt-6 mt-10">
+        <div className="w-full overflow-y-scroll h-screen pb-24 md:mt-6 mt-20">
           <div className="px-5 lg:px-10 w-full py-10">
             <h2>Astrolger Panel</h2>
             <div className="bg-white border-2 border-red-300 shadow-lg shadow-red-300/30 gap-10  w-full flex justify-between mt-10 relative p-7 rounded-xl text-3xl font-bold">

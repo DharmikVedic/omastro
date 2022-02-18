@@ -12,6 +12,7 @@ export default function AstrologerProfileForm(props) {
     language: "",
     expert: "",
     experience: "",
+    price: "",
     desc: "",
     gender: "male",
   };
@@ -54,6 +55,9 @@ export default function AstrologerProfileForm(props) {
     if (!values.age) {
       error.age = "*required";
     }
+    if (!values.price) {
+      error.price = "*required";
+    }
     if (!values.expert) {
       error.expert = "*required";
     }
@@ -87,28 +91,28 @@ export default function AstrologerProfileForm(props) {
     <>
       <form
         onSubmit={submitingform}
-        className="max-w-xl   mx-auto bg-white shadow-lg  p-6 sm:p-10 rounded-md w-full flex  flex-col gap-8 md:gap-12 "
+        className="max-w-xl border border-green-200  mx-auto bg-white shadow-lg  p-6 sm:p-10 rounded-md w-full flex  flex-col gap-8 md:gap-12 "
       >
         <h2 className="text-center">Astrolger Detail Form</h2>
-        <div className="flex md:flex-row flex-col gap-5 ">
-          <div className="w-full flex relative  flex-col pt-2 gap-3 ">
-            <label>Enter Your Full Name:</label>
-            <input
-              type="text"
-              value={formValue.name}
-              placeholder="E.g: kevin hires"
-              onChange={handleInput}
-              id="name"
-              name="name"
-              className={`w-full py-2 bg-transparent text-zinc-800  border-b-2 ${
-                formError.name && formValue.name === ""
-                  ? "border-red-500"
-                  : "border-zinc-400"
-              }  focus:border-green-500   caret-green-500   `}
-            />
-          </div>
-          <div className="w-full flex-col pt-2 gap-3 md:max-w-[170px]">
-            <label>Select Gender:</label>
+        <div className="w-full flex relative  flex-col pt-2 gap-3 ">
+          <label htmlFor="name">Enter Your Full Name:</label>
+          <input
+            type="text"
+            value={formValue.name}
+            placeholder="E.g: kevin hires"
+            onChange={handleInput}
+            id="name"
+            name="name"
+            className={`w-full py-2 bg-transparent text-zinc-800  border-b-2 ${
+              formError.name && formValue.name === ""
+                ? "border-red-500"
+                : "border-zinc-400"
+            }  focus:border-green-500   caret-green-500   `}
+          />
+        </div>
+        <div className="w-full flex  relative items-center flex-col-reverse sm:flex-row-reverse gap-3 ">
+          <div className="w-full flex-col pt-2.5 gap-3 md:max-w-[170px]">
+            <label htmlFor="gender">Select Gender:</label>
             <select
               name="gender"
               id="gender"
@@ -124,7 +128,24 @@ export default function AstrologerProfileForm(props) {
               <option value="female">Female</option>
             </select>
           </div>
+          <div className="w-full flex relative  flex-col pt-2 gap-3 ">
+            <label htmlFor="price">Write Your Price Amount Per 5/min:</label>
+            <input
+              type="number"
+              value={formValue.price}
+              placeholder="E.g: ₹ 125"
+              onChange={handleNumber}
+              id="price"
+              name="price"
+              className={`w-full py-2 bg-transparent text-zinc-800  border-b-2 ${
+                formError.price && formValue.price === ""
+                  ? "border-red-500"
+                  : "border-zinc-400"
+              }  focus:border-green-500   caret-green-500   `}
+            />
+          </div>
         </div>
+
         <div className="w-full flex md:flex-row flex-col gap-4 ">
           <div className="flex flex-col gap-3 w-full">
             <label htmlFor="age" className="w-full">

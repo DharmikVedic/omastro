@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useUserData from "../context/logincontextvalue";
+import { supabase } from "../supabase/supaclient";
 
 export default function LoginForm(props) {
   const initialValue = {
@@ -21,10 +22,11 @@ export default function LoginForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputvalue.email1 !== "" && inputvalue.password1 !== "") {
-      const { error } = await signIn({
+      const { user, session, error } = await supabase.auth.signIn({
         email: inputvalue.email1,
         password: inputvalue.password1,
       });
+
       if (error) {
         seterror("Invalid login credential");
       } else {
@@ -49,7 +51,7 @@ export default function LoginForm(props) {
         </div>
         <div className="flex flex-col gap-5 ">
           <div className="flex flex-col gap-2">
-            <label htmlFor="email" className=" text-zinc-500">
+            <label htmlFor="email1" className=" text-zinc-500">
               Email Address
             </label>
 
@@ -58,7 +60,7 @@ export default function LoginForm(props) {
               type="email1"
               onChange={handleInput}
               value={inputvalue.email1}
-              name="email"
+              name="email1"
               placeholder="name@address.com"
               className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  p-2.5"
               required
