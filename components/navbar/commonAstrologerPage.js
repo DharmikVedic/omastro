@@ -44,6 +44,7 @@ export default function Sidebar(props) {
       })
       .subscribe();
     // console.log(mySubscription);
+    return () => supabase.removeSubscription(mySubscription);
   }, [renderer, render]);
 
   const handleclose = (e) => {
