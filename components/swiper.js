@@ -14,7 +14,7 @@ export default function SwiperComponent(props) {
       // install Swiper modules
       modules={[Navigation]}
       spaceBetween={30}
-      slidesPerView={3}
+      slidesPerView={1}
       navigation
       draggable
       pagination={{ clickable: true }}
