@@ -4,6 +4,7 @@ import useUserData from "../../components/context/logincontextvalue";
 import useCurrentAstrologer from "../../components/context/profileContextvalue";
 import Filter from "../../components/filtercomponent/filter";
 import CombineForm from "../../components/form/combineForm";
+import Loader from "../../components/loader";
 
 import { supabase } from "../../components/supabase/supaclient";
 import { BlurBackground } from "../../components/utils/feature";
@@ -11,10 +12,10 @@ const data = require("../../components/jsondata/astrologerdata.json");
 
 export default function TalkToAstrologer() {
   const [filter, setfilter] = useState(false);
-  const [rerender, setrerender] = useState(false);
+  const [loader, setloader] = useState(true);
   const [state, setstate] = useState([]);
   const [allastrologer, setastrolger] = useState([]);
-
+  const [render, serrender] = useState(false);
   const handleSearch = (e) => {
     const { value } = e.target;
     const arr = allastrologer.filter((item) =>
@@ -30,36 +31,29 @@ export default function TalkToAstrologer() {
   }, []);
 
   useEffect(async () => {
-    const d = await fetchAstrologer();
     const mySubscription = supabase
       .from("astrologerProfile")
       .on("*", (payload) => {
-        // console.log("Change received!", payload);
+        alert("Change received!", payload);
+
         if (payload.new) {
-          const index = d.findIndex(
-            (el) => el.astrologerId === payload.new.astrologerId
-          );
-          if (index === -1) {
-            d.push(payload.new);
-          } else {
-            d[index] = payload.new;
-          }
-          setastrolger(d);
-          setstate(d);
-          setrerender((prev) => !prev);
-          // console.log(index);
+          const data = allastrologer.slice().map((item) => {
+            return item.id === payload.new.id ? payload.new : item;
+          });
+          setstate(data);
+          setastrolger(data);
         }
-        // setastrolger()
       })
       .subscribe();
     return () => supabase.removeSubscription(mySubscription);
-  }, [rerender]);
+  }, [allastrologer, state]);
 
   const fetchAstrologer = async () => {
     const { data, error } = await supabase
       .from("astrologerProfile")
       .select("*")
       .order("id", { isActive: true });
+    setloader(false);
     return data;
   };
 
@@ -163,6 +157,7 @@ export default function TalkToAstrologer() {
           />
         </>
       )}
+
       <div className="pb-36 bg-white pt-28 md:py-36  sm:px-10 flex flex-col gap-14 w-full">
         <div className="flex w-full  md:flex-row flex-col-reverse  justify-between gap-7 md:gap-16 items-center max-w-7xl px-5 mx-auto">
           {user !== null && (
@@ -234,16 +229,22 @@ export default function TalkToAstrologer() {
           </div>
         </div>
 
-        {state.length > 0 ? (
+        {state.length > 0 && !loader ? (
           <div className="grid w-full sm:grid-cols-2 grid-cols-1 lg:grid-cols-3 max-w-7xl mx-auto px-5 gap-10">
             {state.map((item, i) => (
               <AstrologerCard key={i} data={item} />
             ))}
           </div>
         ) : (
-          <h2 className="font-bold mx-auto text-center px-5">
-            Please Write Correct Astrologer Details
-          </h2>
+          <>
+            {loader ? (
+              <Loader />
+            ) : (
+              <h2 className="font-bold mx-auto text-center px-5">
+                Please Write Correct Astrologer Details
+              </h2>
+            )}
+          </>
         )}
       </div>
     </>
@@ -263,7 +264,7 @@ const AstrologerCard = (props) => {
     if (e && user !== null) {
       router.push("/talktoastrologer/call-intake/call-intake-form");
       setlogin(false);
-      storeCurrentAstrologer(props.data.id, user.email);
+      storeCurrentAstrologer(props.data.id, user.email, 0);
     }
   };
 
@@ -272,7 +273,7 @@ const AstrologerCard = (props) => {
       setlogin(true);
     } else {
       router.push("/talktoastrologer/call-intake/call-intake-form");
-      storeCurrentAstrologer(props.data.id, user.email);
+      storeCurrentAstrologer(props.data.id, user.email, 0);
     }
   };
 
@@ -289,7 +290,7 @@ const AstrologerCard = (props) => {
         }
       />
       <div className="shadow-md shadow-red-300/40 duration-150 ease-linear hover:-translate-y-1.5 border border-red-200 relative  flex bg-white flex-col gap-4 p-5 rounded-xl">
-        {props.data.isActive && (
+        {props.data.isActive && !props.data.currentQueue && (
           <>
             <span className="animate-ping absolute  bg-green-500 right-4  w-4 h-4 rounded-full top-4"></span>
             <span className="absolute inline-flex right-4 top-4 rounded-full h-3.5 w-3.5 bg-green-500"></span>
@@ -297,15 +298,17 @@ const AstrologerCard = (props) => {
         )}
         <div
           onClick={() =>
-            router.push(
-              `/talktoastrologer/${props.data.name.split(" ").join("-")}`
-            )
+            router.push(`/talktoastrologer/${props.data.astrologerId}`)
           }
           className="flex border-b pb-3 border-zinc-200 cursor-pointer items-center gap-5 "
         >
-          <div className="w-14 h-14">
+          <div
+            className={`w-14 h-14 ${
+              props.data.currentQueue ? "ring-4 ring-red-400 rounded-full" : ""
+            }`}
+          >
             <img
-              src="/imgs/avatar-2.jpeg"
+              src="/imgs/avatar-2.png"
               className="w-full h-full rounded-full"
               alt="demo"
             />
@@ -357,14 +360,14 @@ const AstrologerCard = (props) => {
 
           <button
             onClick={handleCallButton}
-            disabled={!props.data.isActive}
+            disabled={!props.data.isActive && props.data.currentQueue}
             className={`${
-              props.data.isActive
+              props.data.isActive && !props.data.currentQueue
                 ? "hover:bg-green-500  hover:text-white text-green-500  border-green-500 cursor-pointer "
                 : "border-red-500 text-red-500  opacity-70 cursor-not-allowed"
             }   right-3 bottom-0 absolute  font-bold rounded-lg border-2 max-w-max px-7  py-1.5`}
           >
-            Call
+            {props.data.currentQueue ? "Busy" : "Call"}
           </button>
         </div>
       </div>

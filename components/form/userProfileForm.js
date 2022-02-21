@@ -9,8 +9,7 @@ export default function UserProfileForm() {
   const [typehead, settypehead] = useState(false);
   const [error, seterror] = useState(null);
 
-  const { profile } = useCurrentAstrologer();
-  const { user } = useUserData();
+  const { profile, storeCurrentAstrologer } = useCurrentAstrologer();
 
   let initialValue = {
     name: "",
@@ -42,18 +41,13 @@ export default function UserProfileForm() {
       setformValue(formValue);
     } else if (Object.keys(validay(formValue)).length === 0) {
       let rea = Object.assign({}, formValue);
-      const { data } = await supabase
-        .from("astrologerProfile")
-        .select("id, astrologerId")
-        .eq("id", profile.astrologer);
-      if (data !== null) {
-        pushData(data[0].astrologerId, rea);
-        storedataForAstrologer(
-          { ...rea, email: user.email },
-          data[0].astrologerId
-        );
-        router.push("/callTesting");
-      }
+
+      storedataForAstrologer(
+        { ...rea },
+        profile.astrologer,
+        profile.currentuser
+      );
+      router.push("/callTesting");
 
       seterror(null);
     } else {
@@ -62,31 +56,25 @@ export default function UserProfileForm() {
     }
   };
 
-  const storedataForAstrologer = async (d, astroid) => {
+  const storedataForAstrologer = async (userdata, astroid, currentuser) => {
     const { data } = await supabase
       .from("astrologerProfile")
-      .select("callingHistory")
-      .eq("astrologerId", astroid);
+      .select("name,astrologerId,id,email")
+      .eq("id", astroid);
 
-    data[0].callingHistory.history.push(d);
-
-    const r = await supabase
-      .from("astrologerProfile")
-      .update({
-        currentQueue: true,
-        callingHistory: { history: data[0].callingHistory.history },
-      })
-      .eq("astrologerId", astroid);
-  };
-
-  const pushData = async (id, rea) => {
-    const { data, error } = await supabase.from("userIntakeFormDetail").insert([
+    const r = await supabase.from("currentHistory").insert([
       {
-        ...rea,
-        email: user.email,
-        astrologerId: id,
+        ...userdata,
+        astrologername: data[0].name,
+        astrologerid: data[0].astrologerId,
+        astrologeremail: data[0].email,
+        price: 0,
+        duration: 0,
+        status: true,
+        astrodb: astroid,
       },
     ]);
+    storeCurrentAstrologer(data[0].id, currentuser, r.data[0].id);
   };
 
   const validay = (values) => {

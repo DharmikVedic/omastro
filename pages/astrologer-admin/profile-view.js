@@ -145,7 +145,7 @@ export default function ProfileVeiw() {
 
               <div className="flex gap-5 md:gap-10">
                 <div className="w-full flex relative  flex-col pt-2 gap-3 ">
-                  <label htmlFor="price">Calling Price Per 5 Mins:</label>
+                  <label htmlFor="price">Calling Price Per Mins:</label>
                   <input
                     type="number"
                     value={formValue.price}

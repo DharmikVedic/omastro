@@ -6,9 +6,43 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { supabase } from "./supabase/supaclient";
 
 export default function SwiperComponent(props) {
   const router = useRouter();
+
+  const [state1, setstate1] = useState([]);
+
+  const fetchAstrologer = async () => {
+    const { data, error } = await supabase
+      .from("astrologerProfile")
+      .select("*");
+    return data;
+  };
+
+  useEffect(async () => {
+    const d = await fetchAstrologer();
+    setstate1(d);
+  }, []);
+
+  useEffect(async () => {
+    const mySubscription = supabase
+      .from("astrologerProfile")
+      .on("*", (payload) => {
+        // router.reload();
+        alert("Change received!", payload);
+        if (payload.new) {
+          const data = state1.slice().map((item) => {
+            return item.id === payload.new.id ? payload.new : item;
+          });
+          setstate1(data);
+        }
+      })
+      .subscribe();
+    return () => supabase.removeSubscription(mySubscription);
+  }, [state1]);
+
   return (
     <Swiper
       // install Swiper modules
@@ -29,7 +63,7 @@ export default function SwiperComponent(props) {
           spaceBetween: 20,
         },
         768: {
-          slidesPerView: 4,
+          slidesPerView: 3,
           spaceBetween: 40,
         },
         1024: {
@@ -38,11 +72,11 @@ export default function SwiperComponent(props) {
         },
       }}
     >
-      {props.data.map((item, i) => (
+      {state1.map((item, i) => (
         <SwiperSlide key={i} className="w-full py-5">
           <div
             onClick={() =>
-              router.push(`/talktoastrologer/${item.name.split(" ").join("-")}`)
+              router.push(`/talktoastrologer/${item.astrologerId}`)
             }
             key={i}
             className="flex shadow-md group shadow-red-300/40  relative w-full  flex-col hover:shadow-xl cursor-pointer hover:shadow-rose-200/40 gap-6 pt-10 pb-8 px-7 border border-rose-200 bg-white rounded-xl"

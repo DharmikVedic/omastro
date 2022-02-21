@@ -1,26 +1,47 @@
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase/supaclient";
 import { BlurBackground } from "../utils/feature";
+const md5 = require("md5");
+export default function CallingUi({ astrologerid, closepopup }) {
+  const [canselbutton, setcancelbutton] = useState(false);
+  const [astrologer, setastrologer] = useState(null);
 
-export default function CallingUi({ astrologerid, astrologer, closepopup }) {
-  const [canselbutton, setcancelbutton] = useState();
   useEffect(() => {
-    setTimeout(() => {
-      startBasicCall(
-        "006805fca18065d4589872cee8ad99784b3IABiW3bCRtsdOwrbfV3Q/KqdzBiPz9gKTroyYMkNNHtkCgx+f9gAAAAAIgDzxwcSddkQYgQAAQB02RBiAgB02RBiAwB02RBiBAB02RBi",
-        123,
-        "test"
-      );
-    }, 2000);
-  }, [astrologer]);
+    fetchastrologer();
+  }, []);
+
+  const musicPlayers = useRef(
+    typeof Audio !== "undefined" && new Audio("/audio/dial.mp3")
+  );
+
+  const fetchastrologer = async () => {
+    if (localStorage.getItem("astrologerSignup") !== null) {
+      const id = JSON.parse(localStorage.getItem("astrologerSignup"));
+      const { data, error } = await supabase
+        .from("currentHistory")
+        .select("*")
+        .match({ astrologerid: md5(id.email), status: true });
+      if (data !== null) {
+        setastrologer(data[0]);
+        setTimeout(() => {
+          startBasicCall(
+            data[0]?.token,
+            data[0]?.channel,
+            data[0]?.uid,
+            data[0]?.astrologerid
+          );
+        }, 1000);
+      }
+    }
+  };
 
   let rtc = {
     localAudioTrack: null,
     client: null,
   };
 
-  async function startBasicCall(token, uid, channel) {
+  async function startBasicCall(token, channel, uid, astroid) {
     let options = {
       // Pass your App ID here.
       appId: "805fca18065d4589872cee8ad99784b3",
@@ -29,9 +50,10 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
       // Pass your temp token here.
       token: token,
       // Set the user ID.
-      uid: null,
+      uid: uid,
     };
 
+    musicPlayers.current?.play();
     // Create an AgoraRTCClient object.
     rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
@@ -64,6 +86,21 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
         options.token,
         options.uid
       );
+      musicPlayers.current?.pause();
+      const { data } = await supabase
+        .from("astrologerProfile")
+        .update({
+          currentQueue: true,
+        })
+        .eq("id", astroid);
+
+      const update = await supabase
+        .from("currentHistory")
+        .update({
+          callstatus: true,
+        })
+        .eq("id", astroid);
+
       // Create a local audio track from the audio sampled by a microphone.
       rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
       // Publish the local audio tracks to the RTC channel.
@@ -72,7 +109,6 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
       let isAudioAutoplayFailed = false;
       AgoraRTC.onAudioAutoplayFailed = () => {
         if (isAudioAutoplayFailed) return;
-
         isAudioAutoplayFailed = true;
         const btn = document.createElement("button");
         btn.innerText = "Click me to resume the audio playback";
@@ -93,15 +129,26 @@ export default function CallingUi({ astrologerid, astrologer, closepopup }) {
         // Leave the channel.
         await rtc.client.leave();
         closepopup(true);
-        const { data } = await supabase
+
+        const update = await supabase
           .from("astrologerProfile")
           .update({
             currentQueue: false,
           })
-          .eq("id", astrologerid);
+          .eq("astrologerId", astroid);
+
+        const { data } = await supabase
+          .from("currentHistory")
+          .update({
+            duration: 10,
+            price: 100,
+            status: false,
+          })
+          .match({ astrologerid: astroid, status: true });
       };
     };
   }
+
   return (
     <>
       <Head>

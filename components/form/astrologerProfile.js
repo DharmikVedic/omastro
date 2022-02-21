@@ -129,11 +129,11 @@ export default function AstrologerProfileForm(props) {
             </select>
           </div>
           <div className="w-full flex relative  flex-col pt-2 gap-3 ">
-            <label htmlFor="price">Write Your Price Amount Per 5/min:</label>
+            <label htmlFor="price">Write Your Price Amount Per min:</label>
             <input
               type="number"
               value={formValue.price}
-              placeholder="E.g: ₹ 125"
+              placeholder="E.g: ₹ 25"
               onChange={handleNumber}
               id="price"
               name="price"
