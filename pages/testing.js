@@ -24,7 +24,8 @@ export default function Testing() {
       alert("Server error. Are you online?");
       return;
     } else {
-      // Getting the order details back
+
+
       const { amount, id: order_id, currency } = r;
 
       const options = {
