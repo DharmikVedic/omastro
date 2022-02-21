@@ -14,7 +14,6 @@ export default async function handlePaymentSuccess(req, res) {
         amount,
       } = JSON.parse(req.body);
 
-      console.log(req.body);
 
       const shasum = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET);
 
