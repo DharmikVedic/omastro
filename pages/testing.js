@@ -22,6 +22,8 @@ export default function Testing() {
       },
     });
     const r = await result.json();
+    console.log(r);
+
     if (!result) {
       alert("Server error. Are you online?");
       return;

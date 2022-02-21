@@ -23,14 +23,12 @@ export default async function handler(req, res) {
 
   try {
     const response = await razorpay.orders.create(options);
-    console.log(response);
     res.status(200).json({
       id: response.id,
       currency: response.currency,
       amount: response.amount,
     });
   } catch (err) {
-    console.log(err);
     res.status(400).json(err);
   }
 }
