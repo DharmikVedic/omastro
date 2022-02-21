@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { setDoc, doc, serverTimestamp, getDoc } from "firebase/firestore";
 
 import { db } from "../firebase/firebaseinitialization";
 import useUserData from "../context/logincontextvalue";
+=======
+import "react-phone-number-input/style.css";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
 import { supabase } from "../supabase/supaclient";
 
 export default function RegisterForm(props) {
@@ -11,10 +16,18 @@ export default function RegisterForm(props) {
     password: "",
     name: "",
   };
+<<<<<<< HEAD
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
 
   const { storeuserdata } = useUserData();
+=======
+
+  const [inputvalue, setvalue] = useState(initialValue);
+  const [mobileno, setmobileno] = useState();
+  const [error, seterror] = useState("");
+  const [validatedata, servalidate] = useState();
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
 
   if (error) {
     setTimeout(() => seterror(""), 2000);
@@ -25,6 +38,7 @@ export default function RegisterForm(props) {
     setvalue({ ...inputvalue, [name]: value });
   };
 
+<<<<<<< HEAD
   //   console.log(querySnapshot);
   //   useEffect(async () => {
   //     const q = query(
@@ -65,11 +79,62 @@ export default function RegisterForm(props) {
         //   ...inputvalue,
         // });
       // }
+=======
+  useEffect(() => {
+    if (validatedata === null) {
+      props.passactive(true);
+    }
+  }, [validatedata]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (inputvalue.password.length < 6) {
+      seterror("password must be 6 character");
+    } else if (
+      inputvalue.email !== "" &&
+      inputvalue.password !== "" &&
+      inputvalue.password.length >= 6 &&
+      isValidPhoneNumber(mobileno)
+    ) {
+      validate();
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
     } else {
       seterror("All details must be filled");
     }
   };
 
+<<<<<<< HEAD
+=======
+  const validate = async () => {
+    const { data, error } = await supabase.auth.signUp(
+      {
+        email: inputvalue.email,
+        password: inputvalue.password,
+      },
+      {
+        data: {
+          name: inputvalue.name,
+          mobilenumber: mobileno,
+        },
+      }
+    );
+    servalidate(error);
+    error !== null ? seterror("Email is already register") : storedetail();
+  };
+
+  const storedetail = async () => {
+    const { data, error } = await supabase.from("userDetail").insert([
+      {
+        name: inputvalue.name,
+        email: inputvalue.email,
+        totalamount: 0,
+        mobilenumber: mobileno,
+      },
+    ]);
+    props.passactive(true);
+  };
+
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
   return (
     <div>
       <form
@@ -111,12 +176,32 @@ export default function RegisterForm(props) {
               value={inputvalue.email}
               name="email"
               placeholder="name@address.com"
+<<<<<<< HEAD
               className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  p-2.5"
+=======
+              className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  py-2.5"
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
               required
             />
           </div>
           <div className="flex flex-col gap-2">
             <label htmlFor="password" className="  text-zinc-500  ">
+<<<<<<< HEAD
+=======
+              Mobile Number
+            </label>
+
+            <PhoneInput
+              defaultCountry="IN"
+              placeholder="Enter phone number"
+              value={mobileno}
+              onChange={setmobileno}
+              className="border-2 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-300 rounded-md  px-3 "
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="password" className="  text-zinc-500  ">
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
               Password
             </label>
 
@@ -132,7 +217,11 @@ export default function RegisterForm(props) {
             />
           </div>
           {error !== "" && (
+<<<<<<< HEAD
             <span className="bg-red-50 py-2 px-4 font-semibold text-red-500 border-l-2 border-red-500">
+=======
+            <span className="bg-red-50 py-2 px-4 font-semibold text-red-500 border-l-4 border-red-500">
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
               {error}
             </span>
           )}

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 export default function Filter(props) {
   const [active, setactive] = useState("skill");
 
-  const gender = ["male", "female"];
+  // const gender = ["male", "female"];
 
   //   const language = [
   //     "Arabic",
@@ -79,7 +79,6 @@ export default function Filter(props) {
   const [activeskill, setactiveskill] = useState(props.activeskill);
 
   const handleFilter = (e) => {
-    console.log(e);
     if (
       activegender.every((i) => i === "") ||
       activelanguage.every((j) => j === "") ||
@@ -90,7 +89,7 @@ export default function Filter(props) {
       props.passactive(true);
       props.passfilter({
         skill: activeskill,
-        lang: activelanguage,
+        language: activelanguage,
         gender: activegender,
       });
     }
@@ -110,10 +109,8 @@ export default function Filter(props) {
     };
   });
 
-  console.log(activeskill);
-
   return (
-    <>
+    <div className=" px-5">
       <div
         ref={ref}
         className="bg-white z-20 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-md w-full shadow-xl rounded-md"
@@ -143,9 +140,9 @@ export default function Filter(props) {
                 onClick={() => setactive("skill")}
                 className={`${
                   active === "skill"
-                    ? "border-l-4 border-t-transparent border-red-400 bg-white"
-                    : "bg-zinc-50"
-                }  w-full py-3 text-sm text-left pl-4 text-zinc-800  font-semibold`}
+                    ? " border-t-transparent border-red-400 bg-white text-red-500"
+                    : "bg-zinc-50 text-zinc-800 border-l-transparent"
+                }  w-full border-l-4 py-3 text-sm text-left pl-4  font-semibold`}
               >
                 Skill
               </button>
@@ -163,9 +160,9 @@ export default function Filter(props) {
                 onClick={() => setactive("language")}
                 className={`${
                   active === "language"
-                    ? "border-l-4 border-red-400 border-t-transparent bg-white"
-                    : "bg-zinc-50"
-                }  w-full py-3 text-sm text-left pl-4 text-zinc-800  font-semibold`}
+                    ? " border-red-400  border-t-transparent text-red-500 bg-white"
+                    : "bg-zinc-50 text-zinc-800 border-l-transparent"
+                }  w-full border-l-4 py-3 text-sm text-left pl-4   font-semibold`}
               >
                 Language
               </button>
@@ -173,9 +170,9 @@ export default function Filter(props) {
                 onClick={() => setactive("gender")}
                 className={`${
                   active === "gender"
-                    ? "border-l-4 border-red-400 border-t-transparent bg-white"
-                    : "bg-zinc-50"
-                }  w-full py-3 text-sm text-left pl-4 text-zinc-800  font-semibold`}
+                    ? " border-red-400 text-red-500 border-t-transparent bg-white"
+                    : "bg-zinc-50 text-zinc-800 border-l-transparent"
+                }  w-full py-3 border-l-4 text-sm text-left pl-4   font-semibold`}
               >
                 Gender
               </button>
@@ -261,7 +258,7 @@ export default function Filter(props) {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
@@ -276,27 +273,25 @@ const SelectButton = (props) => {
       props.handle((prev) => [...prev, e.target.value]);
     }
   };
-
-  console.log(props.active, props.name);
-
   return (
     <div
       className={`${
-        props.active === props.name.toLowerCase() ? "bg-red-50" : " bg-zinc-50"
+        props.active === props.name.toLowerCase() ? "bg-red-100" : " bg-zinc-50"
       } flex justify-start py-2 px-2 rounded-md`}
     >
       <label
-        className="flex cursor-pointer gap-2 w-full items-center flex-row"
+        className="flex capitalize cursor-pointer gap-2 w-full items-center flex-row"
         htmlFor={props.name}
       >
         <input
           type="checkbox"
-          className="accent-red-500 w-3 h-3 "
+          className="!accent-red-500  w-3 h-3"
           id={props.name}
           value={props.name}
           checked={props.active === props.name.toLowerCase()}
           onChange={handlechange}
         />
+
         {props.name}
       </label>
     </div>

@@ -1,9 +1,12 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
+import {  useState } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 import Section from "../components/commonSection";
 import Header, { Paragraph } from "../components/commonTextSize";
 import { supabase } from "../components/supabase/supaclient";
+<<<<<<< HEAD
+=======
+import SwiperComponent from "../components/swiper";
+>>>>>>> d608bdd0a7c4385223eec99dd76a389ed3a3c939
 
 export default function Home() {
   const session = supabase.auth.session();
@@ -36,38 +39,60 @@ export default function Home() {
     },
   ];
   const [state, setstate] = useState(false);
-  const router = useRouter();
+
+
   return (
     <div>
+      <div className="md:px-5 pt-36 md:bg-[url('/imgs/hero-gradient.png')] bg-cover bg-no-repeat bg-center md:pt-36  pb-20">
+        <Section
+          py={"py-3 "}
+          px={"md:px-14 px-8"}
+          extra=" items-center md:bg-gradient-to-tr from-violet-50 to-red-50 md:border-2 border-red-300  max-w-6xl mx-auto  items-center md:flex-row flex-col flex gap-14 md:gap-20 rounded-[30px] "
+        >
+          <div className="w-full  flex flex-col gap-10 ">
+            <Header lineheight={1.25} extra="md:text-5xl text-4xl ">
+              Have a Question?
+              <br /> Just Ask! Get real time predictions
+            </Header>
+            <button
+              onClick={() => router.push("/talktoastrologer")}
+              className="bg-red-500 hover:-translate-y-1.5 duration-150 ease-in hover:bg-white border-2 border-transparent hover:border-red-400 p-4 shadow-lg shadow-red-500/30 font-bold text-white hover:text-red-500 text-xl rounded-full max-w-[200px] w-full"
+            >
+              Call Now
+            </button>
+          </div>
+          <div className="w-full flex items-center">
+            <img
+              src="/imgs/question.png"
+              className="w-full md:w-11/12"
+              alt="question"
+            />
+          </div>
+        </Section>
+      </div>
+
       <Section
-        section={
-          "pt-36 md:pt-24 bg-[url('/imgs/hero.svg')] bg-cover bg-center pb-20"
-        }
-        py={"py-0"}
-        px={"px-5"}
-        extra=" items-center md:flex-row flex-col flex gap-14 md:gap-20 rounded-[60px] "
+        py="py-24"
+        section="bg-red-50  md:bg-white"
+        extra="flex flex-col items-center gap-12"
       >
-        <div className="w-full flex flex-col gap-10 ">
-          <Header lineheight={1.3} extra="md:text-5xl text-4xl ">
-            Have a Question?
-            <br /> Just Ask! Get real time predictions
-          </Header>
-          <button
-            onClick={() => router.push("/talktoastrologer")}
-            className="bg-rose-500 hover:-translate-y-1.5 duration-150 ease-in hover:bg-rose-600 p-4 shadow-lg shadow-rose-500/40 font-bold text-white text-xl rounded-full max-w-[200px] w-full"
-          >
-            Call Now
-          </button>
+        <div className="max-w-4xl flex flex-col gap-4 text-center mx-auto ">
+          <Header extra="md:text-5xl text-3xl ">OUR ASTROLOGERS</Header>
+          <Paragraph extra=" md:text-lg">
+            Get in touch with the best Online Astrologers, anytime & anywhere!
+          </Paragraph>
         </div>
-        <div className="w-full flex items-center">
-          <img src="/imgs/question.png" className="w-11/12" alt="question" />
+        <div className="w-full">
+          <div className=" flex overflow-x-auto w-full py-10">
+            <SwiperComponent />
+          </div>
         </div>
       </Section>
 
-      <div className=" bg-white py-20 md:py-32 px-5   w-full">
+      <div className="  bg-green-50 py-20 md:py-32 px-5   w-full">
         <div className="max-w-7xl flex md:flex-row flex-col gap-28 md:gap-10 sm:gap-20 mx-auto items-center ">
           <div className="flex flex-col gap-7 text-left w-full md:w-5/12">
-            <Header extra="md:text-6xl text-5xl text-zinc-900">
+            <Header extra="md:text-5xl text-4xl text-zinc-900">
               Talk To Astrologer
             </Header>
             <Paragraph extra="text-zinc-700 md:text-lg">
@@ -78,7 +103,7 @@ export default function Home() {
             </Paragraph>
             <button
               onClick={() => router.push("/talktoastrologer")}
-              className="hover:bg-green-600 bg-green-500 text-white mt-2 shadow-lg shadow-green-400/30  rounded-[60px] p-4 text-xl font-semibold max-w-[230px] hover:-translate-y-2 transition duration-150 ease-in justify-items-center"
+              className="hover:bg-white bg-green-500 text-white border-2 border-transparent hover:border-green-500 hover:text-zinc-800  mt-2 shadow-lg shadow-green-400/30  rounded-[60px] p-4 text-xl font-semibold max-w-[230px] hover:-translate-y-2 transition duration-150 ease-in justify-items-center"
             >
               Call Now
             </button>
@@ -111,7 +136,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Section section="bg-gray-50" py={"py-28"} extra="flex flex-col gap-10">
+      <Section section="bg-white" py={"py-28"} extra="flex flex-col gap-10">
         <div className="flex flex-col gap-7 max-w-3xl mx-auto text-center">
           <Header>HOW IT WORKS</Header>
           <div>
@@ -175,7 +200,7 @@ export default function Home() {
                 </div>
                 <span className="w-full">Select Astrologer</span>
               </li>
-              <li className="flex items-center font-semibold gap-7">
+              <li className="flex relative z-[2] items-center font-semibold gap-7">
                 <span className="w-full">Talk to Astrologer</span>
                 <div className="p-5 rounded-full bg-purple-100 w-full max-w-max">
                   <img
@@ -191,12 +216,18 @@ export default function Home() {
         </LazyLoadComponent>
       </Section>
 
-      <Section py="py-24" extra="flex flex-col items-center gap-12">
+      <Section
+        py="py-24"
+        section="bg-gray-50"
+        extra="flex flex-col items-center gap-12"
+      >
         <span className="uppercase  text-sm text-red-500 py-1 px-5 rounded-full bg-red-50">
           Testenomial
         </span>
         <div className="max-w-4xl flex flex-col gap-4 text-center mx-auto ">
-          <Header>WHAT ASTRO CLIENTS ARE SAYING</Header>
+          <Header extra="md:text-5xl text-3xl ">
+            WHAT ASTRO CLIENTS ARE SAYING
+          </Header>
           <Paragraph extra=" md:text-lg">
             Top Astrologers. 24 * 7 customer support. Happy to help
           </Paragraph>
