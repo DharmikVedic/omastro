@@ -2,13 +2,10 @@ import React from "react";
 import useUserData from "../components/context/logincontextvalue";
 
 import Loader from "../components/loader";
-import { supabase } from "../components/supabase/supaclient";
 import { initializeRazorpay } from "../components/utils/razorpay";
 
 export default function Testing() {
   const { user } = useUserData();
-
-  console.log(user);
 
   async function displayRazorpay() {
     const res = await initializeRazorpay();
@@ -35,7 +32,9 @@ export default function Testing() {
         description: "Test Transaction",
         order_id: order_id,
         handler: async function (response) {
-          const data = {
+          const data1 = {
+            email: user.email,
+            amount: parseInt(amount) / 100,
             orderCreationId: order_id,
             razorpayPaymentId: response.razorpay_payment_id,
             razorpayOrderId: response.razorpay_order_id,
@@ -43,9 +42,13 @@ export default function Testing() {
           };
           const result = await fetch("/api/payment-success", {
             method: "POST",
-            body: JSON.stringify(data),
+            body: JSON.stringify(data1),
           });
           const res = await result.json();
+
+          // if()
+
+          console.log(res);
         },
         prefill: {
           name: user.user_metadata.name,

@@ -1,7 +1,6 @@
 import Head from "next/head";
 
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import useCurrentAstrologer from "../components/context/profileContextvalue";
 import { supabase } from "../components/supabase/supaclient";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,7 +13,6 @@ export default function CallingTesting() {
   const [astrologer, setastrologer] = useState(null);
   const { profile } = useCurrentAstrologer();
   const router = useRouter();
-  
 
   useEffect(() => {
     if (profile === null) {
@@ -175,6 +173,13 @@ export default function CallingTesting() {
           })
           .eq("astrologerId", astroid);
       };
+
+      const update = await supabase
+        .from("currentHistory")
+        .update({
+          callstatus: true,
+        })
+        .match({ uid: astrologer.uid, status: true, id: profile.history });
       // }
     };
   }
@@ -187,7 +192,6 @@ export default function CallingTesting() {
           src="https://download.agora.io/sdk/release/AgoraRTC_N-4.8.1.js"
         ></script>
       </Head>
-      <ToastContainer />
 
       <div className="bg-green-50 h-screen fixed w-full px-5 z-50 py-20 ">
         <div className="flex flex-col gap-24 max-w-sm mx-auto ">

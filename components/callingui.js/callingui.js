@@ -143,8 +143,9 @@ export default function CallingUi({ astrologerid, closepopup }) {
             duration: 10,
             price: 100,
             status: false,
+            callstatus: true,
           })
-          .match({ astrologerid: astroid, status: true });
+          .match({ astrologerid: astroid, status: true, id: astrologer.id });
       };
     };
   }
