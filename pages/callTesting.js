@@ -174,7 +174,7 @@ export default function CallingTesting() {
           .eq("astrologerId", astroid);
       };
 
-      const update = await supabase
+      const update2 = await supabase
         .from("currentHistory")
         .update({
           callstatus: true,
