@@ -15,7 +15,12 @@ export default function Testing() {
       return;
     }
 
-    const result = await fetch("/api/razorpay", { method: "POST" });
+    const result = await fetch("/api/razorpay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
     const r = await result.json();
     if (!result) {
       alert("Server error. Are you online?");
@@ -42,6 +47,9 @@ export default function Testing() {
           };
           const result = await fetch("/api/payment-success", {
             method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
             body: JSON.stringify(data1),
           });
           const res = await result.json();
