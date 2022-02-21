@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useUserData from "../context/logincontextvalue";
 import { supabase } from "../supabase/supaclient";
 
@@ -9,7 +9,13 @@ export default function LoginForm(props) {
   };
   const [inputvalue, setvalue] = useState(initialValue);
   const [error, seterror] = useState("");
-  const { signIn } = useUserData();
+  const [validatedata, servalidate] = useState();
+
+  useEffect(() => {
+    if (validatedata === null) {
+      props.passactive(true);
+    }
+  }, [validatedata]);
 
   if (error) {
     setTimeout(() => seterror(""), 2000);
@@ -22,19 +28,27 @@ export default function LoginForm(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (inputvalue.email1 !== "" && inputvalue.password1 !== "") {
-      const { user, session, error } = await supabase.auth.signIn({
-        email: inputvalue.email1,
-        password: inputvalue.password1,
-      });
-
-      if (error) {
-        seterror("Invalid login credential");
-      } else {
-        props.passactive(true);
-      }
+      validate();
     } else {
       seterror("All details must be filled");
     }
+  };
+
+  const validate = async () => {
+    const { data, error } = await supabase.auth.signIn({
+      email: inputvalue.email1,
+      password: inputvalue.password1,
+    });
+
+    if (error) {
+      seterror("Invalid login credential");
+    } else {
+      props.passactive(true);
+    }
+    servalidate(error);
+    error !== null
+      ? seterror("Invalid Login Credential")
+      : props.passactive(true);
   };
 
   return (

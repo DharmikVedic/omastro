@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { LazyLoadComponent } from "react-lazy-load-image-component";
 import Section from "../components/commonSection";
 import Header, { Paragraph } from "../components/commonTextSize";
@@ -34,40 +33,7 @@ export default function Home() {
     },
   ];
   const [state, setstate] = useState(false);
-  const [rerender, setrerender] = useState(false);
-  const [state1, setstate1] = useState([]);
-  const [allastrologer, setastrolger] = useState([]);
 
-  const router = useRouter();
-
-  const fetchAstrologer = async () => {
-    const { data, error } = await supabase
-      .from("astrologerProfile")
-      .select("*");
-    return data;
-  };
-
-  useEffect(async () => {
-    const d = await fetchAstrologer();
-    setstate1(d);
-    setastrolger(d);
-  }, []);
-
-  useEffect(async () => {
-    const mySubscription = supabase
-      .from("astrologerProfile")
-      .on("UPDATE", (payload) => {
-        // router.reload();
-        alert("Change received!", payload);
-        setrerender((prev) => !prev);
-        if (payload.new) {
-          router.reload();
-          setrerender(payload.new);
-        }
-      })
-      .subscribe();
-    return () => supabase.removeSubscription(mySubscription);
-  }, [rerender]);
 
   return (
     <div>
@@ -112,7 +78,7 @@ export default function Home() {
         </div>
         <div className="w-full">
           <div className=" flex overflow-x-auto w-full py-10">
-            <SwiperComponent data={state1} />
+            <SwiperComponent />
           </div>
         </div>
       </Section>

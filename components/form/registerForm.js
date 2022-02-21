@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-
-import useUserData from "../context/logincontextvalue";
+import "react-phone-number-input/style.css";
+import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import { supabase } from "../supabase/supaclient";
 
 export default function RegisterForm(props) {
@@ -9,7 +9,9 @@ export default function RegisterForm(props) {
     password: "",
     name: "",
   };
+
   const [inputvalue, setvalue] = useState(initialValue);
+  const [mobileno, setmobileno] = useState();
   const [error, seterror] = useState("");
   const [validatedata, servalidate] = useState();
 
@@ -35,7 +37,8 @@ export default function RegisterForm(props) {
     } else if (
       inputvalue.email !== "" &&
       inputvalue.password !== "" &&
-      inputvalue.password.length >= 6
+      inputvalue.password.length >= 6 &&
+      isValidPhoneNumber(mobileno)
     ) {
       validate();
     } else {
@@ -52,13 +55,24 @@ export default function RegisterForm(props) {
       {
         data: {
           name: inputvalue.name,
+          mobilenumber: mobileno,
         },
       }
     );
     servalidate(error);
-    error !== null
-      ? seterror("Email is already register")
-      : props.passactive(true);
+    error !== null ? seterror("Email is already register") : storedetail();
+  };
+
+  const storedetail = async () => {
+    const { data, error } = await supabase.from("userDetail").insert([
+      {
+        name: inputvalue.name,
+        email: inputvalue.email,
+        totalamount: 0,
+        mobilenumber: mobileno,
+      },
+    ]);
+    props.passactive(true);
   };
 
   return (
@@ -102,8 +116,21 @@ export default function RegisterForm(props) {
               value={inputvalue.email}
               name="email"
               placeholder="name@address.com"
-              className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  p-2.5"
+              className="outline-none focus:ring-2 focus:ring-blue-100 focus:border-blue-300  w-full border-2 rounded-md  px-4  py-2.5"
               required
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="password" className="  text-zinc-500  ">
+              Mobile Number
+            </label>
+
+            <PhoneInput
+              defaultCountry="IN"
+              placeholder="Enter phone number"
+              value={mobileno}
+              onChange={setmobileno}
+              className="border-2 py-2.5 focus:ring-2 focus:ring-blue-100 focus:border-blue-300 rounded-md  px-3 "
             />
           </div>
           <div className="flex flex-col gap-2">

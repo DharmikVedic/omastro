@@ -6,46 +6,51 @@ import { color } from "../../pages/talktoastrologer";
 import CallingUi from "../callingui.js/callingui";
 import { supabase } from "../supabase/supaclient";
 import AstrologerSidebar from "../astrologer-admin/sidebar";
+import { toast, ToastContainer } from "react-toastify";
+const md5 = require("md5");
 
 export default function Sidebar(props) {
   const [calldisplay, setcalldisplay] = useState(false);
   const [renderer, setrerender] = useState([]);
-  const [render, setrender] = useState(false);
   const router = useRouter();
 
   const fetchaastrologer = async () => {
     if (localStorage.getItem("astrologerSignup") !== null) {
-      const data = JSON.parse(localStorage.getItem("astrologerSignup"));
+      const data1 = JSON.parse(localStorage.getItem("astrologerSignup"));
       const d = await supabase
         .from("astrologerProfile")
         .select("*")
-        .eq("email", data.email);
+        .eq("email", data1.email);
       setrerender(d.data[0]);
+
+      // const { data } = await supabase
+      //   .from("currentHistory")
+      //   .select("status")
+      //   .match({ status: true, astrologerid: md5(data1.email) });
+      // setcalldisplay(data[0]);
     }
   };
 
   useEffect(() => {
     fetchaastrologer();
-    if (renderer?.currentQueue) {
-      setcalldisplay(true);
-    }
   }, [renderer.currentQueue]);
+
+
 
   useEffect(async () => {
     const mySubscription = supabase
       .from("astrologerProfile")
       .on("*", (payload) => {
         // router.reload();
-        // console.log("Change received!", payload);
-        setrender((prev) => !prev);
+        alert("Change received!", payload);
         if (payload.new) {
-          setrerender(payload.new);
+          const data = renderer.id === payload.new.id ? payload.new : renderer;
+          setrerender(data);
         }
       })
       .subscribe();
-    // console.log(mySubscription);
     return () => supabase.removeSubscription(mySubscription);
-  }, [renderer, render]);
+  }, []);
 
   const handleclose = (e) => {
     setcalldisplay(false);
@@ -57,7 +62,7 @@ export default function Sidebar(props) {
         <CallingUi
           closepopup={handleclose}
           astrologerid={renderer.id}
-          astrologer={renderer.callingHistory.history.slice(-1)[0]}
+          // astrologer={renderer.callingHistory.history.slice(-1)[0]}
         />
       )}
       <div className="w-full max-w-screen-2xl mx-auto flex overflow-hidden">
