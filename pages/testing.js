@@ -17,12 +17,8 @@ export default function Testing() {
 
     const result = await fetch("/api/razorpay", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
     });
     const r = await result.json();
-    console.log(r);
 
     if (!result) {
       alert("Server error. Are you online?");
@@ -32,7 +28,7 @@ export default function Testing() {
       const { amount, id: order_id, currency } = r;
 
       const options = {
-        key: process.env.RAZORPAY_ID, // Enter the Key ID generated from the Dashboard
+        key: process.env.NEXT_PUBLIC_RAZORPAY_ID, // Enter the Key ID generated from the Dashboard
         amount: amount.toString(),
         currency: currency,
         name: user.user_metadata.name,
@@ -49,14 +45,9 @@ export default function Testing() {
           };
           const result = await fetch("/api/payment-success", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
             body: JSON.stringify(data1),
           });
           const res = await result.json();
-
-          // if()
 
           console.log(res);
         },
